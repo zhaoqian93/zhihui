@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>区域能耗</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
+    <style>
+        .ico-img1 {
+            height: 1.5rem;
+        }
+
+        .t_title {
+            text-align: center;
+        }
+
+        .iconfont {
+            color: #0c6835;
+            font-size: 1.1rem;
+        }
+
+    </style>
+</head>
+
+<body>
+  <div class="aui-content aui-margin-b-15" style="margin-top:345px;">
+      <ul class="aui-list aui-list-in">
+          <li class="aui-list-header">实时数据</li>
+          <li class="aui-list-item aui-list-item-arrow">
+              <div class="aui-list-item-label-icon">
+                  <i class="iconfont icon-48"></i>
+              </div>
+              <div class="aui-list-item-inner" id="U_val">
+
+              </div>
+          </li>
+          <li class="aui-list-item aui-list-item-arrow">
+              <div class="aui-list-item-label-icon">
+                  <i class="iconfont icon-50"></i>
+              </div>
+              <div class="aui-list-item-inner" id="I_val">
+
+              </div>
+          </li>
+          <li class="aui-list-item aui-list-item-arrow">
+              <div class="aui-list-item-label-icon">
+                  <i class="iconfont icon-47"></i>
+              </div>
+              <div class="aui-list-item-inner" id="P_val">
+
+              </div>
+          </li>
+          <li class="aui-list-item aui-list-item-arrow">
+              <div class="aui-list-item-label-icon">
+                  <i class="iconfont icon-gongshuaiyinshu"></i>
+              </div>
+              <div class="aui-list-item-inner" id="PR_val">
+
+              </div>
+          </li>
+          <li class="aui-list-item aui-list-item-arrow">
+              <div class="aui-list-item-label-icon">
+                  <i class="iconfont icon-137"></i>
+              </div>
+              <div class="aui-list-item-inner" id="E_val">
+
+              </div>
+          </li>
+
+      </ul>
+  </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+    apiready = function() {
+        getData();
+
+
+    };
+
+
+
+    function getData() {
+        api.ajax({
+            url: post_url + "energy/show",
+            method: 'post',
+            data: {
+                values: {
+                    dev_id: api.pageParam.id
+                }
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(JSON.stringify(ret));
+
+                var data = ret.data;
+
+                $api.html($api.byId('U_val'), data.U + unit_u);
+                $api.html($api.byId('I_val'), data.I + unit_i);
+                $api.html($api.byId('P_val'), data.Power + unit_p);
+                $api.html($api.byId('PR_val'), data.PowerRate);
+                $api.html($api.byId('E_val'), data.EletricityValue + unit_e);
+
+
+                var UIBarChart = api.require('UIBarChart');
+                UIBarChart.open({
+                    rect: {
+                        x: 0,
+                        y: 1,
+                        w: api.frameWidth,
+                        h: 340
+                    },
+                    yAxis: {
+                        max: 3,
+                        min: 0,
+                        step: 1
+                    },
+                    text: {
+                        xAxis: '小时', //（可选项）字符串类型；x 轴标注文字；默认：X轴
+                        yAxis: '用电' //（可选项）字符串类型；y 轴标注文字；默认：Y轴
+                    },
+                    data: data.UseValue,
+                    styles: {
+                        yAxis: {
+                            width: 30,
+                            bg: '#B2DFEE',
+                            markColor: '#fff',
+                            markSize: 12
+                        },
+                        xAxis: {
+                            height: 30,
+                            bg: '#B2DFEE',
+                            markColor: '#fff',
+                            markSize: 12
+                        },
+                        coordinate: {
+                            bg: '#FFFFFF',
+                        },
+                        bar: {
+                            width: 12,
+                            bg: '#FFFFFF',
+                            tint: '#8BC5EC',
+                            interval: 5
+                        }
+                    },
+                    fixedOn: api.frameName,
+                    fixed: false
+                }, function(ret, err) {
+                    // if (ret) {
+                    //     alert(JSON.stringify(ret));
+                    // } else {
+                    //     alert(JSON.stringify(err));
+                    // }
+                });
+
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>

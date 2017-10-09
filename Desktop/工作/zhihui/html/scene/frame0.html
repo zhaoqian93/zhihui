@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我家</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .aui-list .aui-list-item {
+            min-height: 4.4rem;
+        }
+
+        .aui-list .aui-list-item-title {
+            font-size: 1.0rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="aui-content-padded">
+        <div class="aui-card-list">
+            <div class="aui-card-list-content">
+                <img src="../../image/app/home.png" />
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+    <li class="aui-list-item aui-list-item-middle" onclick="funOpenScene({{=value.id}},'{{=value.name}}')">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media">
+
+                {{? value.img_url }}
+                <img src="{{=value.img_url}}" class="aui-img-round aui-list-img-sm" /> {{??}}
+                <img src="../../image/app/{{=value.image}}" class="aui-img-round aui-list-img-sm" /> {{?}}
+
+
+            </div>
+
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title ">{{=value.name}}</div>
+                    <div class="aui-list-item-right"></div>
+                </div>
+
+            </div>
+        </div>
+    </li>
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    //var token = null;
+    var items = [];
+    var UIListView = null;
+    apiready = function() {
+
+        //console.log($api.getStorage('access_token'));
+        UIListView = api.require('UIListView');
+
+        getData();
+
+        api.addEventListener({
+            name: 'myLogin'
+        }, function(ret, err) {
+            reloadData();
+        });
+
+        api.addEventListener({
+            name: 'sceneRefresh'
+        }, function(ret, err) {
+            reloadData();
+        });
+    };
+
+    function reloadData() {
+
+        var url = post_url + "scene/index";
+        runAjax(url, {}, function(ret, err) {
+            if (ret.code == 200) {
+                items = ret.data.lists;
+                UIListView.reloadData({
+                    data: items
+                }, function(ret) {
+                    if (ret) {
+                        //alert(JSON.stringify(ret));
+                    } else {
+                        //alert(JSON.stringify(err));
+                    }
+                });
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+
+
+    }
+
+    function getData() {
+        var url = post_url + "scene/index";
+        runAjax(url, {}, function(ret, err) {
+            if (ret.code == 200) {
+                items = ret.data.lists;
+                //console.log(JSON.stringify(items));
+                //dotTpl('doT_list', 'item_list', data);
+
+                //items = [data];
+                getList();
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function getList() {
+
+        UIListView.open({
+            rect: {
+                x: 0,
+                y: 0,
+                w: api.winWidth,
+                h: api.frameHeight
+            },
+            data: items,
+            rightBtns: [{
+                bgColor: '#07925f',
+                activeBgColor: '',
+                width: 60,
+                title: '编辑',
+                titleSize: 14,
+                titleColor: '#fff',
+                icon: '',
+                iconWidth: 20
+            }, {
+                bgColor: '#FF0000',
+                activeBgColor: '',
+                width: 60,
+                title: '删除',
+                titleSize: 14,
+                titleColor: '#fff',
+                icon: '',
+                iconWidth: 20
+            }],
+            styles: {
+                borderColor: '#DDDDDD',
+                item: {
+                    bgColor: '#FFFFFF',
+                    activeBgColor: '#F5F5F5',
+                    height: 75,
+                    imgWidth: 50,
+                    imgHeight: 50,
+                    imgCorner: 4,
+                    placeholderImg: '',
+                    titleSize: 16,
+                    titleColor: '#000000',
+                    subTitleSize: 12.0,
+                    subTitleColor: '#666666',
+                    remarkColor: '#000',
+                    remarkSize: 16,
+                    remarkIconWidth: 30
+                }
+            },
+            fixedOn: api.frameName
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(JSON.stringify(ret));
+                if ('clickContent' == ret.eventType) {
+                    funOpenSceneByIndex(ret.index);
+                } else if ('clickRightBtn' == ret.eventType) {
+                    if (ret.btnIndex == 0) { //编辑
+                        funEditSceneByIndex(ret.index);
+                    } else if (ret.btnIndex == 1) { //删除
+                        funDeleteSceneByIndex(ret.index);
+                    }
+
+                }
+                //alert(JSON.stringify(ret));
+            } else {
+                //alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function funDeleteSceneByIndex(idx) {
+        UIListView.getDataByIndex({
+            index: idx
+        }, function(ret, err) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+                var data = ret.data;
+                //console.log(JSON.stringify(data.uid));
+                funOpenScene(data.uid, ret.data.title);
+            } else {
+                //alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function funEditSceneByIndex(idx) {
+        UIListView.getDataByIndex({
+            index: idx
+        }, function(ret, err) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+                var data = ret.data;
+                //console.log(JSON.stringify(data));
+                //funOpenScene(data.uid, ret.data.title);
+
+                api.openWin({
+                    name: 'win_scene_edit',
+                    url: '../scene/win_scene_edit.html',
+                    pageParam: {
+                        id: data.uid,
+                        name: data.title,
+                        sort: data.sort,
+                        img_url: data.img_url,
+                    }
+                });
+
+            } else {
+                //alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function funOpenSceneByIndex(idx) {
+        UIListView.getDataByIndex({
+            index: idx
+        }, function(ret, err) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+                var data = ret.data;
+                //console.log(JSON.stringify(data.uid));
+                funOpenScene(data.uid, ret.data.title);
+            } else {
+                //alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function getDataOld() {
+
+        var url = post_url + "scene/index";
+        runAjax(url, {}, function(ret, err) {
+            if (ret.code == 200) {
+                var data = ret.data.lists;
+                //console.log(JSON.stringify(data));
+                dotTpl('doT_list', 'item_list', data);
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+
+
+    }
+
+    function funOpenScene(id, name) {
+        api.openWin({
+            name: 'win_scene',
+            url: '../scene/win_scene.html',
+            pageParam: {
+                id: id,
+                name: name
+            }
+        });
+    }
+</script>
+
+<script src="../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

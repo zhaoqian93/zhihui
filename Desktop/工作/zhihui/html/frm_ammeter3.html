@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>能耗概况</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui-pull-refresh.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
+    <style>
+        .ico-img1 {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .iconfont {
+            color: #0c6835;
+            font-size: 1.1rem;
+        }
+
+        .t_title {
+            text-align: center;
+        }
+
+        .aui-list-item-text2 {
+            font-size: 0.8rem;
+            color: #757575;
+            position: relative;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            /*-webkit-justify-content: space-between;
+            justify-content: space-between;*/
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .aui-list-item-text2 i {
+            padding: 0 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="aui-refresh-content">
+        <div class="aui-content">
+
+            <div class="aui-card-list">
+
+                <div class="aui-card-list-footer aui-border-t">
+                    <div class="t_title">
+                        <i class="iconfont icon-logo1"></i>
+
+                        <span id="ammeter3_total"></span>
+                    </div>
+                    <div class="t_title">
+                        <i class="iconfont icon-jin"></i>
+                        <span id="ammeter3_today"></span>
+                    </div>
+                    <div class="t_title">
+                        <i class="iconfont icon-zuori"></i>
+                        <span id="ammeter3_yesterday"></span>
+                    </div>
+                </div>
+            </div>
+
+            <section class="aui-content">
+                <div class="aui-card-list">
+
+                    <div class="aui-card-list-content">
+                        <ul class="aui-list aui-media-list" id="item_list">
+
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+
+    <li class="aui-list-item aui-list-item-middle" onclick="funOpenWinAreaAmmeter({{=value.dev_id}})">
+        <div class="aui-media-list-item-inner">
+
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title aui-font-size-16">
+                    <i class="iconfont icon-139"></i>
+                    {{=value.title}}
+                    </div>
+                    <div class="aui-list-item-right">{{=value.EletricityValue}}度</div>
+                </div>
+                <div class="aui-list-item-text2">
+                    <i class="iconfont icon-48"></i> {{=value.U}}V
+                    <i class="iconfont icon-50"></i> {{=value.I}}A
+                    <i class="iconfont icon-47"></i> {{=value.Power}}kw
+                </div>
+            </div>
+        </div>
+    </li>
+    {{~}} {{?}}
+</script>
+<script type="text/javascript">
+    apiready = function() {
+        getData();
+    };
+
+    function getData() {
+        var sno = '222160041660';
+        api.ajax({
+            url: post_url + "area/energy",
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+            data: {
+                values: {
+                    sno: sno
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log(1);
+                var ammeter3_today = ret.data.today_total;
+                var ammeter3_yesterday = ret.data.yesterday_total;
+                var ammeter3_total = ret.data.current_total;
+                $api.html($api.byId('ammeter3_today'), ammeter3_today + unit_e);
+                $api.html($api.byId('ammeter3_yesterday'), ammeter3_yesterday + unit_e);
+                $api.html($api.byId('ammeter3_total'), ammeter3_total + unit_e);
+
+            } else {
+                //console.log(JSON.stringify(err));
+            }
+        });
+
+        api.ajax({
+            url: post_url + "energy/index",
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+                console.log(2);
+
+
+                var data = ret.data.lists;
+                var text = $api.text($api.byId('doT_list'));
+                var evalText = doT.template(text);
+                $api.html($api.byId('item_list'), evalText(data));
+
+
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+
+<script>
+    function funOpenWinAreaAmmeter(id) {
+        api.openWin({
+            name: 'win_area_ammeter',
+            url: './win_area_ammeter.html',
+            pageParam: {
+                id: id
+            }
+        });
+    }
+</script>
+
+<script src="../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

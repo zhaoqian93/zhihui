@@ -1,0 +1,331 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>模式</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        .ico-img1 {
+            height: 1.5rem;
+        }
+
+        .t_title {
+            text-align: center;
+        }
+
+        .iconfont {
+            /*color: #20BCFC;*/
+            font-size: 1.5rem;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.1rem 0;
+        }
+
+        .c1 {
+            color: #36CF78;
+        }
+
+        .aui-list-item-title {
+            display: block;
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="aui-refresh-content">
+        <div class="aui-content  aui-margin-b-15">
+            <ul class="aui-list aui-media-list aui-list-in" id="item_list">
+
+            </ul>
+        </div>
+        <div style="height:4.5rem;"></div>
+    </div>
+
+
+
+
+
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+
+    <li class="aui-list-item aui-list-item-middle">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media {{? value.status==1 }}  c1  {{?}}" style="width: 2rem;">
+                {{? value.device_type==1 }}
+
+                <i class="iconfont icon-dengguang"></i> {{?? value.device_type==2}}
+
+                <i class="iconfont icon-chazuo"></i> {{?? value.device_type==3}}
+
+                <i class="iconfont icon-dianshi"></i> {{?? value.device_type==4}}
+                <i class="iconfont icon-kongtiao1"></i> {{?? value.device_type==5}}
+                <i class="iconfont icon-bingxiang"></i>{{?? value.device_type==7}}
+                <i class="iconfont icon-reshuiqi"></i> {{?? value.device_type==8}}
+                <i class="iconfont icon-paifengshan"></i> {{?? value.device_type==9}}
+                <i class="iconfont icon-chouyouyanji"></i> {{?? value.device_type==10}}
+
+                <i class="iconfont icon-diancilu"></i> {{??}}
+
+                <i class="iconfont icon-dengguang"></i> {{?}}
+            </div>
+
+            <div class="aui-list-item-inner ">
+                <div class="aui-list-item-text">
+
+                    <div class="aui-list-item-title aui-font-size-16" onclick="funActionEdit({{=value.channel_id}},{{=value.status}})">
+                        {{=value.channel_name}}
+                    </div>
+
+                </div>
+                <div class="aui-list-item-text">
+                    {{=value.device_title}} - {{=value.number}}
+                </div>
+            </div>
+        </div>
+    </li>
+
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    var UIMultiSelector = '';
+    var items = [];
+    apiready = function() {
+
+        //console.log(api.pageParam.id);
+        getData();
+        
+
+        api.addEventListener({
+            name: 'sceneRefresh'
+        }, function(ret, err) {
+            getData();
+        });
+
+        UIMultiSelector = api.require('UIMultiSelector');
+    };
+
+
+    function onSocketMessage(ret) {
+        //var obj = eval('(' + ret.data + ')');
+        //console.log(JSON.stringify(obj));
+        //getData();
+        //return true;
+        //alert([e.data,obj.status])
+
+    }
+
+    function startNow() {
+        funSwitchScene(api.pageParam.id);
+    }
+
+    function startLater() {
+
+    }
+
+
+    function getData() {
+        api.ajax({
+            url: post_url + "scene/channel",
+            method: 'post',
+            data: {
+                values: {
+                    scene_id: api.pageParam.id
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret.code == 200) {
+                //console.log(JSON.stringify(ret));
+
+
+                var data = ret.data.lists;
+                var text = $api.text($api.byId('doT_list'));
+                var evalText = doT.template(text);
+                $api.html($api.byId('item_list'), evalText(data));
+
+
+            } else {
+                //console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    var choose_id = null;
+
+    function funActionEdit(id, command) {
+        choose_id = id;
+        if (command == 1) {
+            items = [{
+                text: '    打开',
+                command: 1,
+                status: 'selected'
+            }, {
+                text: '    关闭',
+                command: 0,
+                status: 'normal'
+            }];
+        } else {
+            items = [{
+                text: '    打开',
+                command: 1,
+                status: 'normal'
+            }, {
+                text: '    关闭',
+                command: 0,
+                status: 'selected'
+            }];
+        }
+
+
+        UIMultiSelector.open({
+            rect: {
+                h: 150
+            },
+            text: {
+                title: '更改状态',
+                leftBtn: '',
+                rightBtn: 'X',
+                selectAll: '    全选'
+            },
+            max: 0,
+            singleSelection: true,
+            styles: {
+                mask: 'rgba(0,0,0,0)',
+                title: {
+                    bg: '#F5F5F5',
+                    color: '#51a938',
+                    size: 16,
+                    h: 48
+                },
+                leftButton: {
+                    w: 35,
+                    h: 35,
+                    marginT: 5,
+                    marginL: 8,
+                    bg: '#F5F5F5',
+                    color: 'rgb(0,0,0)',
+                    size: 14
+                },
+                rightButton: {
+                    w: 35,
+                    h: 35,
+                    marginT: 5,
+                    marginR: 8,
+                    color: '#ff6929',
+                    bg: 'rgb(249,212,74)',
+                    size: 14
+                },
+                item: {
+                    h: 45,
+                    bg: 'rgb(255,255,255)',
+                    bgActive: 'rgb(255,255,255)',
+                    bgHighlight: 'rgb(255,255,255)',
+                    color: '#666666',
+                    active: '#51a938',
+                    highlight: 'rgb(255,255,255)',
+                    size: 14,
+                    lineColor: '#cccccc',
+                    textAlign: 'left'
+                },
+
+                icon: {
+                    w: 20,
+                    h: 20,
+                    marginT: 14,
+                    marginH: 8,
+                    bg: '#FFFFFF',
+                    bgActive: '../../icon/choose.png',
+                    bgHighlight: '#FFFFFF',
+                    align: 'right'
+                }
+            },
+            animation: true,
+            items: items
+        }, function(ret, err) {
+            if (ret) {
+
+                if (ret.eventType == 'clickItem') {
+
+                    if (eval(ret.items).length == 0) {
+                        UIMultiSelector.close();
+                        return false;
+                    }
+                    //console.log(JSON.stringify(ret));
+                    var item = ret.items[0];
+                    //console.log(choose_id+'-'+item.command+'-'+api.pageParam.id);
+                    //UIMultiSelector.close();
+
+
+                    var url = post_url + "scene/updatechannel";
+                    var values = {
+                        values: {
+                            scene_id: api.pageParam.id,
+                            channel_id: choose_id,
+                            status: item.command
+                        }
+                    };
+                    runAjax(url, values, function(ret, err) {
+                        if (ret.code == 200) {
+                            getData();
+                            UIMultiSelector.close();
+
+                            //console.log(JSON.stringify(items));
+                            //dotTpl('doT_list', 'item_list', data);
+                        } else {
+                            //toLogin2();
+                            //console.log(JSON.stringify(err));
+                        }
+                    });
+
+
+
+
+                } else if (ret.eventType == 'clickRight') {
+                    UIMultiSelector.close();
+
+                }
+            } else {
+                //alert(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+<script src="../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

@@ -1,0 +1,93 @@
+@import url(http://at.alicdn.com/t/font_404396_5e3apwsz09e5qaor.css);
+html, body {
+    /*height: 100%;*/
+}
+
+.hover {
+    opacity: .8;
+}
+
+.flex-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flex-con {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+.flex-vertical {
+    -webkit-box-orient: vertical;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+}
+
+.border-t, .border-b {
+    position: relative;
+}
+
+.border-t:before, .border-b:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #ddd;
+    right: 0;
+    height: 1px;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.border-b:after {
+    top: auto;
+    bottom: 0;
+}
+
+#wrap {
+    height: 100%;
+}
+
+
+/*header{   line-height: 55px;  height: 55px;text-align: center; }*/
+
+.aui-bar-nav {
+    top: 0;
+    line-height: 2.25rem;
+    background-color: #ff6929;
+    color: #ffffff;
+}
+
+.aui-btn-primary {
+    color: #ffffff;
+    background-color: #ff6929;
+}
+.aui-btn:active {
+  color: #212121;
+  background-color: #ff6929;
+}
+
+
+.aui-title {
+    /*font-size: 18px;*/
+}
+
+.flex-con {
+    overflow: auto
+}
+
+.icon_color_1 {
+    color: #0C6835;
+}
+
+.iconfont15 {
+    font-size: 1.2rem;
+}
+
+.iconfont20 {
+    font-size: 1.5rem;
+}

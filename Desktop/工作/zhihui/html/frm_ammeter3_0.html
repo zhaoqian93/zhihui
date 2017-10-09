@@ -1,0 +1,268 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>三相电表</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui-pull-refresh.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+        .ico-img1 {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .t_title {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="aui-refresh-content">
+        <div class="aui-content">
+
+
+            <div>
+                <ul class="aui-list aui-list-in" id="dList">
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">A相电压</div>
+                            <div class="aui-list-item-right" id="U_A"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">B相电压</div>
+                            <div class="aui-list-item-right" id="U_B"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">C相电压</div>
+                            <div class="aui-list-item-right" id="U_C"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">A相电流</div>
+                            <div class="aui-list-item-right" id="I_A"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">B相电流</div>
+                            <div class="aui-list-item-right" id="I_B"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">C相电流</div>
+                            <div class="aui-list-item-right" id="I_C"></div>
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">总有功功率</div>
+                            <div class="aui-list-item-right" id="P_T"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">A相有功功率</div>
+                            <div class="aui-list-item-right" id="P_A"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">B相有功功率</div>
+                            <div class="aui-list-item-right" id="P_B"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">C相有功功率</div>
+                            <div class="aui-list-item-right" id="P_C"></div>
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">总无功功率</div>
+                            <div class="aui-list-item-right" id="PN_T"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">A相无功功率</div>
+                            <div class="aui-list-item-right" id="PN_A"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">B相无功功率</div>
+                            <div class="aui-list-item-right" id="PN_B"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">C相无功功率</div>
+                            <div class="aui-list-item-right" id="PN_C"></div>
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">总功率因素</div>
+                            <div class="aui-list-item-right" id="PR_T"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">A相功率因素</div>
+                            <div class="aui-list-item-right" id="PR_A"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">B相功率因素</div>
+                            <div class="aui-list-item-right" id="PR_B"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">C相功率因素</div>
+                            <div class="aui-list-item-right" id="PR_C"></div>
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">尖</div>
+                            <div class="aui-list-item-right" id="E_1"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">峰</div>
+                            <div class="aui-list-item-right" id="E_2"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">平</div>
+                            <div class="aui-list-item-right" id="E_3"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">谷</div>
+                            <div class="aui-list-item-right" id="E_4"></div>
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title">温度</div>
+                            <div class="aui-list-item-right" id="Temp"></div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        getData();
+    };
+
+    function getData() {
+        var sno = '222160041660';
+        api.ajax({
+            url: post_url + "area/energy",
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+            data: {
+                values: {
+                    sno: sno
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(ret.data.current_ammeter3.id);
+                // var ammeter3_today = ret.data.today_total;
+                // var ammeter3_yesterday = ret.data.yesterday_total;
+                // var ammeter3_total = ret.data.current_total;
+                // $api.html($api.byId('ammeter3_today'), ammeter3_today + unit_e);
+                // $api.html($api.byId('ammeter3_yesterday'), ammeter3_yesterday + unit_e);
+                // $api.html($api.byId('ammeter3_total'), ammeter3_total + unit_e);
+
+                //实时参数
+                $api.html($api.byId('U_A'), ret.data.current_ammeter3.VolA + unit_u);
+                $api.html($api.byId('U_B'), ret.data.current_ammeter3.VolB + unit_u);
+                $api.html($api.byId('U_C'), ret.data.current_ammeter3.VolC + unit_u);
+                $api.html($api.byId('I_A'), ret.data.current_ammeter3.IA + unit_i);
+                $api.html($api.byId('I_B'), ret.data.current_ammeter3.IB + unit_i);
+                $api.html($api.byId('I_C'), ret.data.current_ammeter3.IC + unit_i);
+
+
+                $api.html($api.byId('P_T'), ret.data.current_ammeter3.ActivePower + unit_p);
+                $api.html($api.byId('P_A'), ret.data.current_ammeter3.ActivePowerA + unit_p);
+                $api.html($api.byId('P_B'), ret.data.current_ammeter3.ActivePowerB + unit_p);
+                $api.html($api.byId('P_C'), ret.data.current_ammeter3.ActivePowerC + unit_p);
+
+                $api.html($api.byId('PN_T'), ret.data.current_ammeter3.ReactivePower + unit_pn);
+                $api.html($api.byId('PN_A'), ret.data.current_ammeter3.ReactivePowerA + unit_pn);
+                $api.html($api.byId('PN_B'), ret.data.current_ammeter3.ReactivePowerB + unit_pn);
+                $api.html($api.byId('PN_C'), ret.data.current_ammeter3.ReactivePowerC + unit_pn);
+
+
+                $api.html($api.byId('PR_T'), ret.data.current_ammeter3.PowerFactor);
+                $api.html($api.byId('PR_A'), ret.data.current_ammeter3.PowerFactorA);
+                $api.html($api.byId('PR_B'), ret.data.current_ammeter3.PowerFactorB);
+                $api.html($api.byId('PR_C'), ret.data.current_ammeter3.PowerFactorC);
+
+
+                $api.html($api.byId('E_1'), ret.data.current_ammeter3.EletricitySharp + unit_e);
+                $api.html($api.byId('E_2'), ret.data.current_ammeter3.EletricityPeak + unit_e);
+                $api.html($api.byId('E_3'), ret.data.current_ammeter3.EletricityFlat + unit_e);
+                $api.html($api.byId('E_4'), ret.data.current_ammeter3.EletricityValley + unit_e);
+
+                $api.html($api.byId('Temp'), ret.data.current_ammeter3.Temp + unit_temp);
+
+
+            } else {
+                //console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+<script src="../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

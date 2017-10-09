@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>区域DIY</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title title" id="sTitle">区域</div>
+            <a class="aui-pull-right aui-btn " onclick="funActionSheet()">
+                <span class="iconfont icon-mulu"></span>
+            </a>
+        </header>
+        <div id="main" class="flex-con">
+
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        $api.fixStatusBar($api.dom('header'));
+        //$api.dom('.title').innerHTML = api.pageParam.name;
+        getData();
+        api.openFrame({
+            name: 'frm_area_display',
+            url: './frm_area_display.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            // bounces : true,
+            pageParam: {
+                id: api.pageParam.id
+            }
+        });
+    };
+
+
+    function getData() {
+        api.ajax({
+            url: post_url + "area/show",
+            method: 'post',
+            data: {
+                values: {
+                    id: api.pageParam.id
+                }
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(ret.data.size);
+                var data = ret.data;
+                $api.html($api.byId('sTitle'), data.name);
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function funActionSheet() {
+        var mnPopups = api.require('MNPopups');
+        mnPopups.open({
+            rect: {
+                w: 120,
+                h: 141
+            },
+            position: {
+                x: api.winWidth - 10,
+                y: 60
+            },
+            styles: {
+                mask: 'rgba(0,0,0,0.2)',
+                bg: '#eee',
+                cell: {
+                    bg: {
+                        normal: '',
+                        highlight: ''
+                    },
+                    h: 45,
+                    title: {
+                        marginL: 30,
+                        color: '#636363',
+                        size: 16,
+                    },
+                    icon: {
+                        marginL: 4,
+                        w: 20,
+                        h: 20,
+                        corner: 1
+                    }
+                },
+                pointer: {
+                    size: 7,
+                    xPercent: 90,
+                    yPercent: 0,
+                    orientation: 'downward'
+                }
+            },
+            datas: [{
+                title: '回路状态',
+                icon: 'widget://image/app/line.png'
+            }, {
+                title: '异常提示',
+                icon: 'widget://image/app/notice2.png'
+            }, {
+                title: '日志记录',
+                icon: 'widget://image/app/record.png'
+            }],
+            animation: true
+        }, function(ret) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+
+                if (ret.eventType == "click1") {
+                    //console.log(ret.index);
+
+                    api.openWin({
+                        name: 'win_ammeter3_menu',
+                        url: './win_ammeter3_menu.html',
+                        //delay : 200,
+                        pageParam: {
+                            id: ret.index
+                        },
+                    });
+                }
+            }
+        });
+    }
+</script>

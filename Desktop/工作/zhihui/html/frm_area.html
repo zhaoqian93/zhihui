@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>二级区域</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+
+    .iconfont{
+      color: #20BCFC;
+
+    }
+
+
+    </style>
+</head>
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical" >
+
+        <div id="main" class="flex-wrap flex-con" >
+          <section class="aui-grid">
+            <div class="aui-row"  id="item_list">
+
+            </div>
+
+          </section>
+
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js" ></script>
+
+
+<script id="doT_list" type="text/x-dot-template">
+{{? it && it.length > 0}}
+{{~ it :value}}
+
+
+    <div class="aui-col-xs-4" onclick="funOpenAreaDisplay({{=value.id}})">
+        <i class="iconfont iconfont20 icon-fangjian"></i>
+        <div class="aui-grid-label">{{=value.name}}</div>
+    </div>
+
+
+
+{{~}}
+{{?}}
+</script>
+
+<script type="text/javascript">
+    apiready = function(){
+      //getData();
+    };
+
+    function funOpenAreaDisplay(id){
+      api.openWin({
+          name: 'win_area_display',
+          url: './win_area_display.html',
+          pageParam: {
+              id: id
+         }
+      });
+    }
+
+
+    function getData(){
+      api.ajax({
+            url: post_url + "area/index",
+            method: 'post',
+            data : {
+      				values : {
+      					pid:api.pageParam.id
+      				}
+      			},
+
+            headers:{'Authorization': 'Bearer ' + $api.getStorage('access_token')},
+        }, function(ret, err) {
+          if (ret) {
+            //console.log(ret.data.size);
+
+
+            var data = ret.data.lists;
+             var text = $api.text($api.byId('doT_list'));
+             var evalText = doT.template(text);
+             $api.html($api.byId('item_list'), evalText(data));
+
+
+          } else {
+          console.log(JSON.stringify(err));
+          }
+        });
+    }
+</script>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>通电回路</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+        .aui-list-item-title{
+          width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+
+    <div class="aui-content  aui-margin-b-15">
+        <ul class="aui-list aui-media-list aui-list-in" id="item_list">
+
+        </ul>
+    </div>
+
+
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+
+<script id="doT_list" type="text/x-dot-template">
+
+
+    {{? it && it.length > 0}} {{~ it :value}}
+
+    <li class="aui-list-item aui-list-item-middle">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media" style="width: 2rem;">
+                {{? value.device_type==1 }}
+
+                <i class="iconfont icon-dengguang"></i> {{?? value.device_type==2}}
+
+                <i class="iconfont icon-chazuo"></i> {{?? value.device_type==3}}
+
+                <i class="iconfont icon-dianshi"></i> {{?? value.device_type==4}}
+                <i class="iconfont icon-kongtiao1"></i> {{?? value.device_type==5}}
+                <i class="iconfont icon-bingxiang"></i>{{?? value.device_type==7}}
+                <i class="iconfont icon-reshuiqi"></i> {{?? value.device_type==8}}
+                <i class="iconfont icon-paifengshan"></i> {{?? value.device_type==9}}
+                <i class="iconfont icon-chouyouyanji"></i> {{?? value.device_type==10}}
+
+                <i class="iconfont icon-diancilu"></i> {{??}}
+
+                <i class="iconfont icon-dengguang"></i> {{?}}
+            </div>
+
+
+            <div class="aui-list-item-inner ">
+                <div class="aui-list-item-text">
+
+                    <div class="aui-list-item-title aui-font-size-14">
+                        {{=value.name}}
+                    </div>
+                    <div class="aui-list-item-right" style="width:120px; text-align:right;">
+                        {{=value.max_i}}A
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+
+
+
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    apiready = function() {
+
+
+        getStatus();
+
+        setInterval(function() {
+            getStatus();
+        }, 5000);
+
+
+
+    }
+
+
+    function getStatus() {
+
+
+        //通道状态 channel/status
+        api.ajax({
+            url: post_url + "channel/status",
+            method: 'post',
+            data: {
+                values: {
+                    status: 1
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+
+                if (ret.code == 200) {
+                    var data = ret.data.lists;
+                    //console.log(JSON.stringify(data));
+                    var text = $api.text($api.byId('doT_list'));
+                    var evalText = doT.template(text);
+                    $api.html($api.byId('item_list'), evalText(data));
+                }
+
+            } else {
+                //toLogin2();
+            }
+        });
+    }
+</script>

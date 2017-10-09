@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>通道列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        .iconfont {
+            /*color: #20BCFC;*/
+            font-size: 1.5rem;
+        }
+
+        .c1 {
+            color: #36CF78;
+        }
+
+        .aui-media-list .aui-list-item-inner {
+            display: block;
+            padding-top: 0.1rem;
+            padding-bottom: 0.1rem;
+        }
+        .aui-list-item-title{
+          display: block;
+          width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="aui-refresh-content">
+        <div class="aui-content  aui-margin-b-15">
+            <ul class="aui-list aui-media-list aui-list-in" id="item_list">
+
+            </ul>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+    <li class="aui-list-item aui-list-item-middle">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media" style="width: 2rem;">
+                {{? value.device_type==1 }}
+
+                <i class="iconfont icon-dengguang"></i> {{?? value.device_type==2}}
+
+                <i class="iconfont icon-chazuo"></i> {{?? value.device_type==3}}
+
+                <i class="iconfont icon-dianshi"></i> {{?? value.device_type==4}}
+                <i class="iconfont icon-kongtiao1"></i> {{?? value.device_type==5}}
+                <i class="iconfont icon-bingxiang"></i>{{?? value.device_type==6}}
+                <i class="iconfont icon-xiyiji"></i>{{?? value.device_type==7}}
+                <i class="iconfont icon-reshuiqi"></i> {{?? value.device_type==8}}
+                <i class="iconfont icon-paifengshan"></i> {{?? value.device_type==9}}
+                <i class="iconfont icon-chouyouyanji"></i> {{?? value.device_type==10}}
+
+                <i class="iconfont icon-diancilu"></i> {{?? value.device_type==11}}
+
+                <i class="iconfont icon-chuanglian"></i>{{?? value.device_type==12}}
+
+                <i class="iconfont icon-shexiangtou3"></i>{{??}}
+
+                <i class="iconfont icon-dengguang"></i> {{?}}
+            </div>
+
+            <div class="aui-list-item-inner ">
+                <div class="aui-list-item-text">
+
+                    <div class="aui-list-item-title aui-font-size-16" onclick="openWinEditChannel({{=value.id}})">
+                        {{=value.name}}
+                    </div>
+                    <div class="aui-list-item-right" onclick="funSwitchSlc({{=value.id}},{{=value.device_vtype}},{{=value.dev_id}},{{=value.number}},{{=value.status}})">
+                        {{? value.status==1 }} <i class="iconfont c1 icon-kai"></i>{{??}} <i class="iconfont icon-guan"></i> {{?}}
+                    </div>
+                </div>
+                <div class="aui-list-item-text">
+                    通道{{=value.number}}
+                </div>
+            </div>
+        </div>
+    </li>
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    apiready = function() {
+
+        //console.log(api.pageParam.id);
+        getData();
+        connectSocket();
+
+
+        api.addEventListener({
+            name: 'channelUpdate'
+        }, function(ret, err) {
+            getData();
+        });
+    };
+
+    function onSocketMessage(ret) {
+        //var obj = eval('(' + ret.data + ')');
+        //console.log(JSON.stringify(obj));
+        getData();
+        //return true;
+        //alert([e.data,obj.status])
+
+    }
+
+
+    function getData() {
+
+        var url = post_url + "device/channel";
+        var values = {
+            values: {
+                id: api.pageParam.id
+            }
+        };
+        runAjax(url, values, function(ret, err) {
+            if (ret.code == 200) {
+                var data = ret.data.lists;
+                //console.log(JSON.stringify(data));
+                dotTpl('doT_list', 'item_list', data);
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+
+    }
+
+    function openWinEditChannel(id) {
+      api.openWin({
+          name: 'win_device_channel_edit',
+          url: './win_device_channel_edit.html',
+          pageParam: {
+              id: id
+          }
+      });
+    }
+</script>
+
+<script src="../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

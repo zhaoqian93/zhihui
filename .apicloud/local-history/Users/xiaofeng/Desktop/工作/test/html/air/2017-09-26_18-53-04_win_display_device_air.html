@@ -1,0 +1,307 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>空调</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+
+        body{
+          background-color:#97CBFF;
+        }
+    
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .big_img {
+            opacity: 0.6;
+        }
+
+        .c1 {
+            color: #cf492e;
+        }
+
+        .c2 {
+            color: #1296db;
+        }
+
+        .c3 {
+            color: #4ba440;
+        }
+
+        .background {
+            width: 100%;
+            height: 180px;
+            /*border: 1px solid black;*/
+        }
+
+        .tempbox {
+            margin-top: 40px;
+            font-size: 3rem;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            color: #DB5149;
+        }
+
+        .transbox {
+            width: 100%;
+            height: 40px;
+            margin-top: 140px;
+            padding-left: 10px;
+            background-color: #ffffff;
+            position: absolute;
+            opacity: 0.8;
+        }
+
+        .enter {
+            font-size: 2rem;
+        }
+
+        .switch0 {
+            font-size: 2rem;
+            color: #c1d2d7;
+        }
+
+        .switch1 {
+            font-size: 2rem;
+            color: #dc5a43; //dc5a43
+        }
+
+        .switch2 {
+            font-size: 1.4rem;
+            color: #dc5a43; //c1d2d7
+        }
+
+        .switch_plus {
+            font-size: 1.6rem;
+            color: #666666;
+            margin-top: 0.2rem;
+            display: block;
+        }
+
+        .p_title1 {
+            height: 72px;
+            line-height: 72px;
+        }
+
+        .aui-card-list-header,
+        .aui-card-list-footer {
+            min-height: 2.2rem;
+            padding: 0.2rem 0.75rem;
+        }
+
+        /*.aui-grid [class*=aui-col-] {
+            padding: 0.2rem 0;
+        }*/
+
+        .up .aui-col-xs-4 {
+            height: 4.6rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title title" id="sTitle">客厅空调</div>
+            <a class="aui-pull-right aui-btn">
+                <span class="iconfont icon-shezhi"></span>
+            </a>
+        </header>
+        <div id="main" class="flex-con">
+
+            <div class="background">
+                <div class="transbox">
+                    <div class="aui-row ">
+                        <div class="aui-col-xs-4">
+                            <i class="iconfont c1 iconfont15 icon-wendu"></i>
+                            <span id="sensus_wendu">0</span>
+                        </div>
+                        <div class="aui-col-xs-4">
+                            <i class="iconfont c1 iconfont15 icon-shidu"></i>
+                            <span id="sensus_shidu">0</span>
+                        </div>
+                        <div class="aui-col-xs-4">
+                            <i class="iconfont c1 iconfont15 icon-daqiyali"></i>
+                            <span id="sensus_daqiya">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <section class="aui-grid ">
+                <div class="aui-row">
+                    <div class="aui-col-xs-4" onclick="addTemp()">
+                        <i class="iconfont switch_plus icon-jian"></i>
+                    </div>
+                    <div class="aui-col-xs-4" onclick="funSendDevice(517)">
+                        <i class="iconfont switch1 icon-switch1"></i>
+                    </div>
+                    <div class="aui-col-xs-4" onclick="reduceTemp()">
+                        <i class="iconfont switch_plus icon-jia4"></i>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+            <section class="aui-grid" style="border-top:15px solid #EFEFEF">
+                <div class="aui-row">
+                    <div class="aui-col-xs-3 " onclick="funSendDevice(521)">
+                        <i class="iconfont iconfont20 c2 icon-zhileng"></i>
+                        <div class="aui-grid-label">制冷</div>
+                    </div>
+
+                    <div class="aui-col-xs-3" onclick="funSendDevice(550)">
+                        <i class="iconfont iconfont20 c2 icon-zhire"></i>
+                        <div class="aui-grid-label">制热</div>
+                    </div>
+
+                    <div class="aui-col-xs-3" onclick="funSendDevice(519)">
+                        <i class="iconfont iconfont20 c2 icon-chushi"></i>
+                        <div class="aui-grid-label">除湿</div>
+                    </div>
+
+                    <div class="aui-col-xs-3" onclick="funSendDevice(518)">
+                        <i class="iconfont iconfont20 c2 icon-tongfeng"></i>
+                        <div class="aui-grid-label">通风</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="aui-grid" style="border-top:5px solid #EFEFEF">
+                <div class="aui-row">
+                    <div class="aui-col-xs-3">
+                        <i class="iconfont c3 icon-48"></i>
+                        <div class="aui-grid-label">239.8V</div>
+                    </div>
+
+                    <div class="aui-col-xs-3">
+                        <i class="iconfont  c3 icon-50"></i>
+                        <div class="aui-grid-label">5.1A</div>
+                    </div>
+
+                    <div class="aui-col-xs-3">
+                        <i class="iconfont  c3 icon-47"></i>
+                        <div class="aui-grid-label">1120W</div>
+                    </div>
+
+                    <div class="aui-col-xs-3">
+                        <i class="iconfont  c3 icon-gongshuaiyinshu"></i>
+                        <div class="aui-grid-label">0.998</div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        fix_android_ios('black');
+        $api.dom('#sTitle').innerHTML = api.pageParam.name;
+        getData();
+
+        connectSocket();
+        //console.log(api.pageParam.id);
+    };
+
+    //夏天 默认启动制冷 20度
+    //冬天 默认启动制热 26度
+
+    var dev_id = api.pageParam.id;
+    var temp_min = 16;
+    var temp_max = 30;
+
+    var temp_cur = 20;
+
+
+    var air_mode = 1;
+
+    function addTemp(){
+      if(temp_cur>temp_max){
+        return false;
+      }
+      temp_cur++;
+      var send_data = ' { "device":"6100", "action":"conditioner", "user_id":1, "device_id":'+ dev_id +' , "mode":'+air_mode+' , "temp": '+temp_cur+'}';
+      ws.send(send_data);
+    }
+
+    function reduceTemp(){
+      if(temp_cur>temp_min){
+      }
+      temp_cur--;
+      var send_data = ' { "device":"6100", "action":"conditioner", "user_id":1, "device_id":'+ dev_id +' , "mode":'+air_mode+' , "temp": '+temp_cur+'}';
+      ws.send(send_data);
+    }
+
+
+
+
+    function onSocketMessage(e) {
+        var obj = eval('(' + e.data + ')');
+        //console.log(JSON.stringify(obj));
+        return true;
+        //alert([e.data,obj.status])
+
+    }
+
+
+    function funSendDevice(code) {
+
+        //{ "device":"6100", "action":"conditioner", "user_id":123, "device_id":22 , "mode":1 , "temp": 16}
+        var send_data = ' { "device":"6100", "action":"tv", "user_id":1, "device_id":' + dev_id + ' , "code": ' + code + '} ';
+        ws.send(send_data);
+    }
+
+
+    function getData() {
+        api.ajax({
+            url: post_url + "sensus/show",
+            method: 'post',
+            data: {
+                values: {
+                    dev_id: dev_id
+                }
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+
+                //console.log(JSON.stringify(ret));
+                //console.log(ret.data.size);
+                var data = ret.data.lists[0];
+                //console.log(JSON.stringify(data));
+                //$api.html($api.byId('sTitle'), data.name);
+
+
+                $api.html($api.byId('sensus_wendu'), data.wendu + unit_temp);
+                $api.html($api.byId('sensus_shidu'), data.shidu + unit_shidu);
+                $api.html($api.byId('sensus_daqiya'), data.daqiya + unit_daqiya);
+
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>

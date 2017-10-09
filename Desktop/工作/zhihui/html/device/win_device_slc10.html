@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>slc-10参数配置</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .aui-list .aui-list-item-label {
+            width: 80%;
+        }
+
+        .aui-list .aui-list-item-input {
+            width: 20%;
+        }
+
+        .aui-list-item {
+            height: 2.6rem;
+        }
+
+        .aui-list .aui-list-header {
+            color: #333333;
+            background-color: #fff9e9;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title title" id="sTitle"></div>
+            <!-- <a class="aui-pull-right aui-btn" onclick="funSendToDevice()">
+                <span class="iconfont icon-f14"></span>
+            </a> -->
+        </header>
+        <div id="main" class="flex-con">
+
+            <div class="aui-content aui-margin-b-15">
+                <ul class="aui-list aui-form-list">
+                    <li class="aui-list-header">参数设置</li>
+
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                总最大电流(默认40A)
+                            </div>
+
+                            <div class="aui-list-item-input">
+                                <input type="number" id="v_total_max_i" placeholder="A" value="" max="60">
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                单通道最大电流(默认5A)
+                            </div>
+
+                            <div class="aui-list-item-input">
+                                <input type="number" id="v_only_max_i" placeholder="A" value="" max="10">
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                电流递增报警值(默认5A)
+                            </div>
+
+                            <div class="aui-list-item-input">
+                                <input type="number" id="v_add_max_i" placeholder="A" value="" max="10">
+                            </div>
+
+                        </div>
+                    </li>
+
+
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                过压保护值(默认240V)
+                            </div>
+                            <div class="aui-list-item-input">
+                                <input type="number" id="v_max_u" placeholder="V" value="" max="250">
+                            </div>
+                        </div>
+                    </li>
+
+
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                定时上报频率(10S)
+                            </div>
+                            <div class="aui-list-item-input">
+                                <input type="number" id="v_timer" placeholder="S" value="">
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="aui-content-padded">
+            <section class="aui-grid aui-margin-b-15">
+                <div class="aui-row" onclick="postData()">
+                    <div class="aui-btn aui-btn-primary aui-btn-block">
+                        <i class="iconfont icon-save"></i> 保存
+                    </div>
+                </div>
+            </section>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        fix_android_ios('black');
+
+        $api.html($api.byId('sTitle'), api.pageParam.name);
+
+
+
+        dev_id = api.pageParam.id;
+        vtype = api.pageParam.vtype;
+
+        getData();
+        //connectSocket();
+        //console.log(api.pageParam.id);
+    };
+
+
+
+
+
+
+
+    function onSocketMessage(ret) {
+        //var obj = eval('(' + ret.data + ')');
+        //console.log(JSON.stringify(obj));
+        return true;
+        //alert([e.data,obj.status])
+
+    }
+
+
+    function funSendToDevice() {
+
+        var param = "4200000000004300000000004400000000004a0000000000";
+
+        //{ "device":"6100", "action":"conditioner", "user_id":123, "device_id":22 , "mode":1 , "temp": 16}
+        var send_data = ' { "device":' + vtype + ', "action":"rconfig", "user_id":1, "device_id":' + dev_id + ', "param":"' + param + '" } ';
+        //console.log(send_data);
+        ws.send(send_data);
+    }
+
+    function getData() {
+        api.ajax({
+            url: post_url + "device/setup/show",
+            method: 'post',
+            data: {
+                values: {
+                    dev_id: dev_id
+                }
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+
+                //console.log(JSON.stringify(ret));
+                //console.log(ret.data.size);
+                var data = ret.data;
+                //console.log(JSON.stringify(data));
+                //$api.html($api.byId('sTitle'), data.name);
+
+
+                document.getElementById("v_total_max_i").value = data.parameter.total_max_i;
+                document.getElementById("v_only_max_i").value = data.parameter.only_max_i;;
+                document.getElementById("v_add_max_i").value = data.parameter.add_max_i;;
+                document.getElementById("v_max_u").value = data.parameter.max_u;;
+                document.getElementById("v_timer").value = data.parameter.timer;;
+
+            } else {
+                //console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function postData() {
+        var p_total_max_i = document.getElementById("v_total_max_i").value;
+        var p_only_max_i = document.getElementById("v_only_max_i").value;
+        var p_add_max_i = document.getElementById("v_add_max_i").value;
+        var p_max_u = document.getElementById("v_max_u").value;
+        var p_timer = document.getElementById("v_timer").value;
+
+        var values = {
+            dev_id: dev_id,
+            parameter: {
+                total_max_i: p_total_max_i,
+                only_max_i: p_only_max_i,
+                add_max_i: p_add_max_i,
+                max_u: p_max_u,
+                timer: p_timer
+            }
+        }
+
+
+        api.ajax({
+            url: post_url + "device/setup/update",
+            method: 'post',
+            data: {
+                values: values
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+
+            if (ret.code == 200) {
+
+
+              api.toast({
+                  msg: '设置成功',
+                  duration: 500,
+                  location: 'middle'
+              });
+                //console.log(JSON.stringify(ret));
+
+
+                // api.sendEvent({
+                //     name: 'houseRefresh',
+                //     extra: {
+                //
+                //     }
+                // });
+
+            } else {
+                //toLogin2();
+            }
+        });
+    }
+</script>

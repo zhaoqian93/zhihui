@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>编辑通道信息</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .aui-list .aui-list-item-label {
+            width: 50%;
+        }
+
+        .aui-list .aui-list-item-input {
+            width: 50%;
+        }
+
+        .aui-list-item {
+            height: 2.6rem;
+        }
+
+        .aui-list .aui-list-header {
+            color: #333333;
+            background-color: #fff9e9;
+        }
+    </style>
+</head>
+
+<body>
+
+
+            <div class="aui-content aui-margin-b-15">
+                <ul class="aui-list aui-form-list">
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                名称
+                            </div>
+
+                            <div class="aui-list-item-input">
+                                <input type="text" id="v_name" value="">
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                设备类型
+                            </div>
+                            <!-- 1照明 2插座 3电视 4空调 5冰箱 6洗衣机 7热水器 8排风扇 9抽油烟机10电磁炉 -->
+                            <!-- 1照明 2插座 3电视 4空调 5冰箱 6洗衣机 7热水器 8排风扇 9抽油烟机10电磁炉 11窗帘 12 摄像头 -->
+                            <div class="aui-list-item-input">
+                                <select id="v_device_type">
+                                  <option value="1">照明</option>
+                                  <option value="2">插座</option>
+                                  <option value="3">电视机</option>
+                                  <option value="4">空调</option>
+                                  <option value="5">冰箱</option>
+                                  <option value="6">洗衣机</option>
+                                  <option value="7">热水器</option>
+                                  <option value="8">排风扇</option>
+                                  <option value="9">抽油烟机</option>
+                                  <option value="10">电磁炉</option>
+                                  <option value="11">窗帘</option>
+                                  <option value="12">摄像头</option>
+                              </select>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                保护电流(A)
+                            </div>
+
+                            <div class="aui-list-item-input">
+                                <input type="text" id="v_max_i" value="" max="60">
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-label">
+                                归属房间
+                            </div>
+
+                            <div class="aui-list-item-input">
+                              <select id="v_house_id">
+                                <option value="0">未分配</option>
+                              </select>
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                </ul>
+            </div>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="aui-content-padded">
+            <section class="aui-grid aui-margin-b-15">
+                <div class="aui-row" onclick="postData()">
+                    <div class="aui-btn aui-btn-primary aui-btn-block">
+                        <i class="iconfont icon-save"></i> 提交
+                    </div>
+                </div>
+            </section>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+
+
+
+
+        //id = api.pageParam.id;
+
+        var url = post_url + "channel/show";
+        var values = {
+            values: {
+                id: api.pageParam.id
+            }
+        };
+        runAjax(url, values, function(ret, err) {
+            //console.log(JSON.stringify(ret));
+            if (ret.code == 200) {
+                var channel = ret.data.channel;
+                $api.val($api.byId('v_name'), channel.name);
+                //$api.val($api.byId('v_device_type'), data.device_type);
+                //console.log(data.device_type);
+                setDeviceType(channel.device_type);
+                $api.val($api.byId('v_max_i'), channel.max_i);
+
+                var houses = ret.data.houses;
+                for(var i=0;i<houses.length;i++){
+                    $api.append($api.byId('v_house_id'),'<option value="'+ houses[i]['id']+'">'+ houses[i]['name'] +'</option>');
+                }
+                setChannelHouse(channel.house_id);
+
+
+                //console.log(JSON.stringify(data));
+
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+
+
+        //console.log(api.pageParam.id);
+    };
+
+
+
+    function postData() {
+
+        var p_name = document.getElementById("v_name").value;
+        var p_device_type = document.getElementById("v_device_type").value;
+        var p_max_i = document.getElementById("v_max_i").value;
+        var p_house_id = document.getElementById("v_house_id").value;
+
+        api.ajax({
+            url: post_url + "channel/update",
+            method: 'post',
+            data: {
+                values: {
+                    id: api.pageParam.id,
+                    name: p_name,
+                    device_type: p_device_type,
+                    max_i: p_max_i,
+                    house_id: p_house_id,
+                    //img_url: img_url,
+                }
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+
+            if (ret.code == 200) {
+                //console.log(JSON.stringify(ret));
+                close_win('win_device_channel_edit');
+                //close_win('win_house');
+
+
+                api.sendEvent({
+                    name: 'channelUpdate',
+                    extra: {
+                        //'name': p_name
+                    }
+                });
+
+
+
+            } else {
+                //toLogin2();
+            }
+        });
+    }
+
+    function setDeviceType(val) {
+        var sel = document.getElementById('v_device_type');
+
+        for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value == val) {
+                sel.options[i].selected = true;
+                break;
+            }
+        }
+    }
+
+    function setChannelHouse(val) {
+        var sel = document.getElementById('v_house_id');
+        for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value == val) {
+                sel.options[i].selected = true;
+                break;
+            }
+        }
+    }
+
+</script>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>空调</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style1.css" />
+    <script src="../../echarts/dist/echarts.min.js" />
+    <style>
+        html{
+          background-color:#fff;
+        }
+        body{
+          background-color:#fff;
+        }
+
+        .aui-grid{
+          background-color: #fff;
+        }
+
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .big_img {
+            opacity: 0.6;
+        }
+
+        .c1 {
+            color: #cf492e;
+        }
+
+        .c2 {
+            color: #1296db;
+        }
+
+        .c3 {
+            color: #4ba440;
+        }
+
+        .background {
+            width: 100%;
+            height: auto;
+            background-color:	#fff;
+            /*border: 1px solid black;*/
+        }
+
+        .tempbox {
+            /*margin-top: 40px;*/
+            font-size: 3rem;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            color: #DB5149;
+        }
+
+        .transbox {
+            width: 100%;
+            height: auto;
+            /*margin-top: 140px;*/
+            padding-left: 10px;
+            background-color:	#fff;
+            position: absolute;
+            opacity: 0.8;
+        }
+
+        .enter {
+            font-size: 2rem;
+        }
+
+        .switch0 {
+            font-size: 2rem;
+            color: #c1d2d7;
+        }
+
+        .switch1 {
+            font-size: 2rem;
+            color: #dc5a43; //dc5a43
+        }
+
+        .switch2 {
+            font-size: 1.4rem;
+            color: #dc5a43; //c1d2d7
+        }
+
+        .switch_plus {
+            font-size: 1.6rem;
+            color: #666666;
+            margin-top: 0.2rem;
+            display: block;
+        }
+
+        .p_title1 {
+            height: 72px;
+            line-height: 72px;
+        }
+
+        .aui-card-list-header,
+        .aui-card-list-footer {
+            min-height: 2.2rem;
+            padding: 0.2rem 0.75rem;
+        }
+
+        /*.aui-grid [class*=aui-col-] {
+            padding: 0.2rem 0;
+        }*/
+
+        /*.up .aui-col-xs-4 {
+            height: 4.6rem;
+        }*/
+    </style>
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'ECharts 入门示例'
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>

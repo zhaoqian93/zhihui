@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>上传图片</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<style>
+		.iconfont {
+			font-size: 1.2rem;
+		}
+
+		html,
+		body {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+				<span class="iconfont icon-fanhui2"></span>
+			</a>
+			<div class="aui-title title" id="sTitle">上传图片</div>
+			<a class="aui-pull-right aui-btn " tapmode="hover" onclick="saveAvatar();">
+				<span class="iconfont icon-save"></span>
+			</a>
+		</header>
+		<div id="main" class="flex-con">
+		</div>
+	</div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+	var FNImageClip = '';
+	apiready = function() {
+		fix_android_ios('black');
+		FNImageClip = api.require('FNImageClip');
+		upload_avatar();
+	}
+</script>
+
+<script>
+	function uploadImage(fs_img) {
+		//				api.showProgress();
+		//show_progress();
+		api.ajax({
+			url: post_url + "upload/image",
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'json',
+			returnAll: false,
+			headers: {
+				'Authorization': 'Bearer ' + $api.getStorage('access_token')
+			},
+			data: {
+				values: {
+					id: 1
+				},
+				files: {
+					image: fs_img
+				}
+			}
+		}, function(ret, err) {
+			//console.log(JSON.stringify(err));
+			if (ret) {
+				if (ret.code == 200) {
+					//console.log(JSON.stringify(ret));
+					//发送更换头像监听事件
+					api.sendEvent({
+						name: 'upload_option_image',
+						extra: ret
+					});
+					close_win('option_image');
+				}
+				//						var urlJson = JSON.stringify(ret);
+				//						api.alert({
+				//							msg : urlJson
+				//						});
+
+			} else {
+				api.alert({
+					msg: '网络异常，请重试'
+				});
+				//						api.alert({
+				//							msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
+				//						});
+			};
+		});
+	}
+
+	function saveAvatar() {
+		var fs_img = 'fs://res/imageClip/' + generateMixed(10) + '.png'
+		FNImageClip.save({
+			destPath: fs_img,
+			copyToAlbum: false,
+			quality: 1
+		}, function(ret, err) {
+			if (ret) {
+				//alert(JSON.stringify(ret));
+				uploadImage(fs_img);
+			} else {
+				api.alert({
+					msg: '网络异常，请重试'
+				});
+				//						alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	function upload_avatar() {
+		api.getPicture({
+			sourceType: 'library',
+			encodingType: 'jpg',
+			mediaValue: 'pic',
+			destinationType: 'url',
+			allowEdit: true,
+			quality: 100,
+			// targetWidth : 800,
+			// targetHeight : 280,
+			saveToPhotoAlbum: false
+		}, function(ret, err) {
+			if (ret) {
+				//alert(JSON.stringify(ret));
+				crop(ret.data);
+			} else {
+				api.alert({
+					msg: '网络异常，请重试'
+				});
+				//						alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	function crop(url) {
+		//var FNImageClip = api.require('FNImageClip');
+		FNImageClip.open({
+			rect: {
+				x: 0,
+				y: $api.dom('header').offsetHeight,
+				w: api.winWidth,
+				h: api.winHeight
+			},
+			srcPath: url,
+			mode: 'image', //all image  clip
+			style: {
+				mask: 'rgba(0,0,0,0.5)',
+				clip: {
+					w: api.winWidth,
+					h: api.winWidth * 28 / 80,
+					x: 0,
+					y: api.winHeight / 4,
+					//borderColor: '#ff6929',
+					borderWidth: 0,
+					appearance: 'rectangle', // 'rectangle'
+				}
+			},
+			fixedOn: api.frameName
+		}, function(ret, err) {
+			if (ret) {
+				//alert(JSON.stringify(ret));
+			} else {
+				api.alert({
+					msg: '网络异常，请重试'
+				});
+				//						alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+	function generateMixed(n) {
+		var res = "";
+		for (var i = 0; i < n; i++) {
+			var id = Math.ceil(Math.random() * 35);
+			res += chars[id];
+		}
+		return res;
+	}
+</script>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>TV</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .iconfont {
+            font-size: 2.0rem;
+        }
+        .aui-col-xs-4{
+          border:solid 0.001rem grey;
+        }
+
+
+        .big_img {
+            opacity: 0.6;
+        }
+
+        .c1 {
+            color: #cf492e;
+        }
+
+        .c2 {
+            color: #1296db;
+        }
+
+        .c3 {
+            color: #4ba440;
+        }
+
+        .background {
+            width: 100%;
+            height: 230px;
+            background: 	#84C1FF no-repeat;
+            background-size: 100% 100%;
+            /*border: 1px solid black;*/
+        }
+
+        .background img{
+          height:180px;
+          margin-left:30%;
+
+        }
+
+        .tempbox {
+            margin-top: 40px;
+            font-size: 3rem;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            color: #DB5149;
+        }
+
+        .transbox {
+            width: 100%;
+            height: 40px;
+            margin-top: 140px;
+            padding-left: 10px;
+            background-color: #ffffff;
+            position: absolute;
+            opacity: 0.8;
+        }
+
+        .enter {
+            font-size: 1.8rem;
+        }
+
+        .switch0 {
+            font-size: 2.5rem;
+            color: #c1d2d7;
+        }
+
+        .switch1 {
+            font-size: 2.5rem;
+            color: #dc5a43; //dc5a43
+        }
+
+        .switch2 {
+            font-size: 1.4rem;
+            color: #dc5a43; //c1d2d7
+        }
+
+        .switch_plus {
+            font-size: 1.4rem;
+            color: #c1d2d7;
+            /*margin-top: 0.2rem;*/
+            display: block;
+        }
+
+        .p_title1 {
+            height: 52px;
+            line-height: 52px;
+        }
+
+        .aui-card-list-header,
+        .aui-card-list-footer {
+            min-height: 2.2rem;
+            padding: 0.2rem 0.75rem;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.2rem 0;
+        }
+
+        .up .aui-col-xs-4 {
+            height: 3.6rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title title" id="sTitle">窗帘</div>
+
+        </header>
+        <div id="main" class="flex-con">
+
+            <div class="background">
+              <img src="../../image/app/chuanglian.png">
+              <p style="color:#fff;text-align:center;">左右全开状态</p>
+            </div>
+
+            <section class="aui-grid">
+            <div class="aui-row">
+                <div class="aui-col-xs-4">
+
+                    <i class="iconfont">&#xe627;</i>
+                    <div class="aui-grid-label">左窗帘开</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe626;</i>
+                    <div class="aui-grid-label">右窗帘开</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe624;</i>
+                    <div class="aui-grid-label">左右窗帘开</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe624;</i>
+                    <div class="aui-grid-label">左窗帘关</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe624;</i>
+                    <div class="aui-grid-label">右窗帘关</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe622;</i>
+                    <div class="aui-grid-label">左右窗帘关</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe624;</i>
+                    <div class="aui-grid-label">左窗帘停</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe624;</i>
+                    <div class="aui-grid-label">右窗帘停</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="iconfont">&#xe623;</i>
+                    <div class="aui-grid-label">左右窗帘停</div>
+                </div>
+            </div>
+        </section>
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+
+    apiready = function() {
+        fix_android_ios('black');
+        //$api.dom('.title').innerHTML = api.pageParam.name;
+        //getData();
+        $api.dom('#sTitle').innerHTML = api.pageParam.name;
+
+        //connectSocket();
+        //console.log(api.pageParam.id);
+    };
+
+    var dev_id = api.pageParam.id;
+
+
+    function onSocketMessage(ret) {
+        //var obj = eval('(' + e.data + ')');
+        //console.log(JSON.stringify(ret));
+        return true;
+        //alert([e.data,obj.status])
+
+    }
+
+
+    function funSendToSensus(code) {
+
+        //{ "device":"6100", "action":"conditioner", "user_id":123, "device_id":22 , "mode":1 , "temp": 16}
+        var send_data = ' { "device":"6100", "action":"tv", "user_id":1, "device_id":' + dev_id + ' , "code": ' + code + '} ';
+        ws.send(send_data);
+    }
+
+    function getData() {
+        api.ajax({
+            url: post_url + "sensus/show",
+            method: 'post',
+            data: {
+                values: {
+                    dev_id: dev_id
+                }
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+
+                //console.log(JSON.stringify(ret));
+                //console.log(ret.data.size);
+                var data = ret.data.lists[0];
+                //console.log(JSON.stringify(data));
+                //$api.html($api.byId('sTitle'), data.name);
+
+
+                $api.html($api.byId('sensus_wendu'), data.wendu + unit_temp);
+                $api.html($api.byId('sensus_shidu'), data.shidu + unit_shidu);
+                $api.html($api.byId('sensus_daqiya'), data.daqiya + unit_daqiya);
+
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>

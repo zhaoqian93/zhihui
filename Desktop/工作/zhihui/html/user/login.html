@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+    html, body {
+        height: 100%;
+    }
+    </style>
+</head>
+<body>
+  <div id="wrap" class="flex-wrap flex-vertical" >
+    <header class="aui-bar aui-bar-nav">
+        <a class="aui-pull-left aui-btn" >
+          <img src="../../image/app/logo6.png" style="height:28px;">
+        </a>
+        <div class="aui-title title">登录</div>
+    </header>
+      <div id="main" class="flex-con" >
+      </div>
+  </div>
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+apiready = function(){
+    fix_android_ios('black');
+
+    api.setWinAttr({
+            slidBackEnabled : false
+    });
+
+    api.openFrame({
+        name: 'frm_login',
+        url: './login_frm.html',
+        rect: {
+            x: 0,
+            y: $api.dom('header').offsetHeight,
+            w: api.winWidth,
+            h: $api.dom('#main').offsetHeight
+        }
+    });
+    // api.closeFrameGroup({
+    //     name: 'home_group'
+    // });
+
+};
+</script>

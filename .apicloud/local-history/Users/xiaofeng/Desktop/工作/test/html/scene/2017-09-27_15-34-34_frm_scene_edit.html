@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>模式-编辑</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .iconfont {
+            /*color: #20BCFC;*/
+            font-size: 1rem;
+        }
+
+        .up_img {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #000;
+        }
+        #img_upload{
+          width: 160px;
+          height: 160px;
+        }
+    </style>
+</head>
+
+<body>
+
+  <section class="aui-grid aui-margin-b-15">
+    <div class="aui-row">
+        <div class="aui-col-xs-3" style="height:160px;">
+
+        </div>
+        <div class="aui-col-xs-6" onclick="upImageScene()">
+            <img id="img_upload"  src="../../image/app/add_scene.png" class="aui-img-round aui-list-img-sm">
+          <div class="up_img">点击上传</div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-form-list">
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        名称
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" id="v_name" placeholder="请输入个性化名称">
+                    </div>
+                </div>
+            </li>
+
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        显示排序
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="number" id="v_sort" placeholder="0">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </div>
+
+        <footer class="aui-bar aui-bar-tab" id="footer">
+            <div class="aui-content-padded">
+                <section class="aui-grid aui-margin-b-15">
+                    <div class="aui-row" onclick="postData()">
+                        <div class="aui-btn aui-btn-primary aui-btn-block">
+                            <i class="iconfont icon-save"></i> 保存
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </footer>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+
+<script type="text/javascript">
+
+    var img_url = '';
+    apiready = function() {
+
+
+      $api.val($api.byId('v_name'), api.pageParam.name);
+      $api.val($api.byId('v_sort'), api.pageParam.sort);
+      document.getElementById("img_upload").setAttribute('src', api.pageParam.img_url);
+
+        api.addEventListener({
+            name: 'upload_scene_image'
+        }, function(ret, err) {
+            console.log(JSON.stringify(ret));
+            img_url = ret.value.data;
+            //console.log(domain_url+img_url);
+            document.getElementById("img_upload").setAttribute('src', domain_url + img_url);
+
+        });
+    };
+
+
+    function postData() {
+        var p_name = document.getElementById("v_name").value;
+        var p_sort = document.getElementById("v_sort").value;
+        //var p_description = document.getElementById("v_description").value;
+        api.ajax({
+            url: post_url + "scene/update",
+            method: 'post',
+            data: {
+                values: {
+                    id: api.pageParam.id,
+                    name: p_name,
+                    sort: p_sort,
+                    img_url: img_url,
+                    //description: p_description,
+                }
+            },
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+          //console.log(JSON.stringify(ret));
+            if (ret.code == 200) {
+                //console.log(JSON.stringify(ret));
+                close_win('win_scene_edit');
+
+
+                api.sendEvent({
+                    name: 'sceneRefresh',
+                    extra: {
+
+                    }
+                });
+
+            } else {
+                //toLogin2();
+            }
+        });
+    }
+</script>

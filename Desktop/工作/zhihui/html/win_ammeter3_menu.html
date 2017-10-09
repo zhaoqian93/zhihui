@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>公司能管</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title" id="sTitle"></div>
+
+        </header>
+
+        <div id="main" class="flex-con">
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    var aTitle = ['实时数据', '用电报表', '能耗分析'];
+    apiready = function() {
+        $api.fixStatusBar($api.dom('header'));
+        $api.byId('sTitle').innerHTML = "公司总能耗-" + aTitle[api.pageParam.id];
+        api.openFrame({
+            name: 'frm_ammeter3_' + api.pageParam.id,
+            url: './frm_ammeter3_' + api.pageParam.id + '.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            //bounces: true,
+            pageParam: {
+                //name: api.pageParam.name
+            }
+        });
+    };
+</script>

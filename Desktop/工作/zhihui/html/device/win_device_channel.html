@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>设备</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .iconfont {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title title" id="sTitle">设备名称</div>
+            <a class="aui-pull-right aui-btn" onclick="funOpenSetup()">
+                <span class="iconfont icon-shezhi"></span>
+            </a>
+        </header>
+        <div id="main" class="flex-con">
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    var vtype = null;
+    var id = 0;
+    var name = null;
+    apiready = function() {
+        fix_android_ios('black');
+
+        id = api.pageParam.id;
+        vtype = api.pageParam.vtype;
+        name = api.pageParam.name;
+        //console.log(1);
+        $api.dom('#sTitle').innerHTML = name;
+        //getData();
+
+
+        var frm_name = 'frm_device_channel';
+        if (vtype == 6100) {
+            frm_name = 'frm_device_sensus';
+        }
+
+
+        api.openFrame({
+            name: frm_name,
+            url: './' + frm_name + '.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            // bounces : true,
+            pageParam: {
+                id: id
+            }
+        });
+    };
+
+    function funOpenSetup() {
+
+
+        if (vtype == 4100) {
+            var win_name = 'win_device_slc10';
+        } else if (vtype == 4300) {
+            var win_name = 'win_device_slc6';
+        } else if (vtype == 6100) {
+            var win_name = 'win_device_sense';
+        } else {
+            return false;
+        }
+
+
+
+
+        api.openWin({
+            name: win_name,
+            url: './' + win_name + '.html',
+            pageParam: {
+                id: id,
+                vtype: vtype,
+                name: name
+            }
+        });
+
+
+
+    }
+</script>

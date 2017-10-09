@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>模式明细</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .on {
+            color: #36CF78;
+        }
+
+        .off {
+            color: #999999;
+        }
+
+        .aui-switch:checked {
+            border-color: #36CF78;
+            background-color: #36CF78;
+        }
+
+        .ctimer {
+            color: #4794e5;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title title" id="sTitle">模式</div>
+            <a class="aui-pull-right aui-btn " tapmode="hover" onclick="funActionEdit();">
+                <span class="iconfont icon-jia"></span>
+            </a>
+        </header>
+        <section id="timer" class="aui-grid ">
+            <div class="aui-row" style="border-top:2px solid #DDDDDD;border-bottom:4px solid #cccccc;">
+
+                <div style="padding-left:1rem;padding-right:1rem; height:2.2rem;">
+
+                    <input type="checkbox" class="aui-switch" style="float:right;margin-top:0.4rem;" checked>
+                    <div style="display:Inline;padding-right:0.8rem; ">定时设置:</div>
+                    <div style="display:Inline;padding-right:0.5rem;" id="v_timer">07:00</div>
+                    <i class="iconfont ctimer icon-dingshi" style="padding-left:1.2rem;"></i>
+                </div>
+        </section>
+        <div id="main" class="flex-con">
+        </div>
+
+        <footer class="aui-bar aui-bar-tab" id="footer">
+            <div class="aui-content-padded">
+                <section class="aui-grid ">
+                    <div class="aui-row">
+                        <div onclick="startNow()">
+                            <div class="aui-btn aui-btn-primary aui-btn-block">
+                                <i class="iconfont icon-play" style="font-size:1rem;"></i> 立即执行
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </footer>
+        </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    var UIMultiSelector = '';
+    var items = [];
+    apiready = function() {
+        fix_android_ios('black');
+        //console.log(api.pageParam.id);
+        $api.dom('#sTitle').innerHTML = api.pageParam.name;
+
+        connectSocket();
+
+        //getData();
+        var y_height = $api.dom('header').offsetHeight + $api.dom('#timer').offsetHeight;
+
+        api.openFrame({
+            name: 'frm_scene',
+            url: './frm_scene.html',
+            rect: {
+                x: 0,
+                y: y_height,
+                w: api.winWidth,
+                h: api.winHeight - y_height - $api.dom('footer').offsetHeight +10
+            },
+            // bounces : true,
+            pageParam: {
+                id: api.pageParam.id,
+                name: api.pageParam.name
+            }
+        });
+
+
+
+        var url = post_url + "channel/index";
+        runAjax(url, {}, function(ret, err) {
+            if (ret.code == 200) {
+                items = ret.data.lists;
+                //console.log(JSON.stringify(items));
+                //dotTpl('doT_list', 'item_list', data);
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+
+
+
+
+        // items = [{
+        //     text: 'Monday',
+        //     status: 'normal'
+        // }, {
+        //     text: 'Tuesday',
+        //     status: 'normal'
+        // }];
+
+        UIMultiSelector = api.require('UIMultiSelector');
+    };
+
+
+    function startNow() {
+      console.log(api.pageParam.id);
+        funSwitchScene(api.pageParam.id);
+    }
+
+    function onSocketMessage(ret) {
+    }
+
+    function funActionEdit() {
+
+
+        UIMultiSelector.open({
+            rect: {
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            text: {
+                title: '添加设备',
+                leftBtn: '关闭',
+                rightBtn: '保存',
+                selectAll: '    全选'
+            },
+            max: 0,
+            singleSelection: false,
+            styles: {
+                mask: 'rgba(0,0,0,0)',
+                title: {
+                    bg: '#F5F5F5',
+                    color: '#ff6929',
+                    size: 16,
+                    h: 48
+                },
+                leftButton: {
+                    w: 80,
+                    h: 35,
+                    marginT: 5,
+                    marginL: 8,
+                    bg: '#E0E0E0',
+                    color: 'rgb(0,0,0)',
+                    size: 14
+                },
+                rightButton: {
+                    w: 80,
+                    h: 35,
+                    marginT: 5,
+                    marginR: 8,
+                    color: '#916f47',
+                    bg: 'rgb(249,212,74)',
+                    size: 14
+                },
+                item: {
+                    h: 45,
+                    bg: 'rgb(255,255,255)',
+                    bgActive: 'rgb(255,255,255)',
+                    bgHighlight: 'rgb(255,255,255)',
+                    color: '#666666',
+                    active: '#ff6929',
+                    highlight: 'rgb(255,255,255)',
+                    size: 14,
+                    lineColor: '#cccccc',
+                    textAlign: 'left'
+                },
+
+                icon: {
+                    w: 20,
+                    h: 20,
+                    marginT: 14,
+                    marginH: 8,
+                    bg: '#FFFFFF',
+                    bgActive: '../../icon/choose2.png',
+                    bgHighlight: '#FFFFFF',
+                    align: 'right'
+                }
+            },
+            animation: true,
+            items: items
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(JSON.stringify(ret));
+                if (ret.eventType == 'clickLeft') {
+                    UIMultiSelector.close();
+                } else if (ret.eventType == 'clickRight') {
+                    var postItems = ret.items;
+
+                    if (eval(postItems).length > 0) {
+                        var url = post_url + "scene/addchannel";
+
+                        var values = {
+                            values: {
+                                scene_id: api.pageParam.id,
+                                items: jsonToStr(postItems)
+                            }
+                        };
+
+                        runAjax(url, values, function(ret, err) {
+                            //console.log(JSON.stringify(ret));
+                            if (ret.code == 200) {
+                                //items = ret.data.lists;
+                                //console.log(JSON.stringify(items));
+                                //dotTpl('doT_list', 'item_list', data);
+
+                                api.sendEvent({
+                                    name: 'sceneRefresh',
+                                    extra: {
+
+                                    }
+                                });
+                                UIMultiSelector.close();
+
+                            } else {
+                                //toLogin2();
+                                //console.log(JSON.stringify(err));
+                            }
+                        });
+                    } else {
+                        api.toast({
+                            msg: '请至少选择一个设备',
+                            duration: 2000,
+                            location: 'middle' //top 顶部 middle 中间 bottom 底部
+                        });
+                    }
+
+
+                }
+            } else {
+                //alert(JSON.stringify(err));
+            }
+        });
+    }
+</script>

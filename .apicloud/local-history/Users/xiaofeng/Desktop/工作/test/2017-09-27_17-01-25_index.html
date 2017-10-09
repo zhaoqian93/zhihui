@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <style>
+        #footer {
+            /*background-color: #13cdf4;*/
+            border-top: 1px solid #999999;
+            /*height: 52px;*/
+        }
+
+        .aui-bar-tab .aui-active {
+            /*color: #039be5;*/
+            color: #33CCFF;
+        }
+
+        .iconfont {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+  <header class="aui-bar aui-bar-nav">
+      <a class="aui-pull-left aui-btn" >
+          <img src="./image/app/logo4.png" style="height:28px;">
+      </a>
+      <div class="aui-title title" id="sTitle">企鹅智家演示</div>
+      <a class="aui-pull-right aui-btn " tapmode="hover" onclick="funActionSheet();">
+          <span class="iconfont icon-mulu"></span>
+      </a>
+  </header>
+
+
+    <div id="main" class="flex-con">
+
+    </div>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="aui-bar-tab-item aui-active" onclick="randomSwitchBtn( this );" tapmode>
+            <i class="iconfont icon-jia6"></i>
+            <div class="aui-bar-tab-label">我家</div>
+        </div>
+        <div class="aui-bar-tab-item" onclick="randomSwitchBtn( this );" tapmode>
+            <i class="iconfont icon-shebeikongzhi1"></i>
+            <div class="aui-bar-tab-label">智控</div>
+        </div>
+        <div class="aui-bar-tab-item" onclick="randomSwitchBtn( this );" tapmode>
+            <i class="iconfont icon-huanjing"></i>
+            <div class="aui-bar-tab-label">环境</div>
+        </div>
+        <div class="aui-bar-tab-item" onclick="randomSwitchBtn( this );" tapmode>
+            <i class="iconfont icon-137"></i>
+            <div class="aui-bar-tab-label">用电</div>
+        </div>
+        <div class="aui-bar-tab-item" onclick="randomSwitchBtn( this );" tapmode>
+            <i class="iconfont icon-wo"></i>
+            <div class="aui-bar-tab-label">我的</div>
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>
+
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/config.js"></script>
+<script type="text/javascript" src="./script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+
+        fix_android_ios('black');
+        // var winWidth = api.winWidth;
+        // console.log(winWidth);
+        // var winHeight = api.winHeight;
+        // console.log(winHeight);
+
+        //console.log($api.getStorage('access_token'));
+
+        api.addEventListener({
+            name: 'myLogin'
+        }, function(ret, err) {
+
+            token = get_token();
+            funIniGroup();
+            api.ajax({
+                url: post_url + "user/info",//请求地址
+                method: 'post',//异步请求方法类型
+                data: {
+                    values: {
+
+                    }//以表单方式提交参数（JSON对象）
+                },//post数据，method为get时不传
+
+                headers: {
+                    'Authorization': 'Bearer ' + $api.getStorage('access_token')
+                },//请求头
+            }, function(ret, err) {
+                if (ret.code == 200) {
+
+                    //console.log(JSON.stringify(ret));
+                    $api.setStorage('userinfo', ret.data);//设置
+                    userinfo = ret.data;
+                    //console.log(userinfo.family_name);
+
+                    $api.html($api.byId('sTitle'), userinfo.family_name);
+
+                } else {
+
+                    //console.log(JSON.stringify(err));
+                }
+            });
+
+        });
+
+        //toLogin();
+
+        //console.log(token);
+        token = get_token();
+        if (token == null) {
+            //console.log(token);
+            api.openWin({
+                name: 'login',
+                url: './html/user/login.html'
+            });
+
+        } else {
+            //console.log(token);
+            userinfo = $api.getStorage('userinfo');//获得制定userinfo的值
+            if (userinfo != undefined) {
+                $api.html($api.byId('sTitle'), userinfo.family_name);
+
+            }
+            funIniGroup();
+
+        }
+
+    }
+
+    var tablen = 5;
+
+    function funIniGroup() {
+
+        // console.log('funIniGroup');
+        //var eHeaderLis = $api.domAll('header li'),
+        frames = [];
+        for (var i = 0, len = tablen; i < len; i++) {
+            frames.push({
+                name: 'frame' + i,
+                url: './html/home/frame' + i + '.html',
+                bgColor: 'rgba(0,0,0,.2)',
+                //bounces:true
+            })
+        }
+        api.openFrameGroup({
+          //打开frame组
+            name: 'home_group',//fram组名字
+            scrollEnabled: false,//frame组是否能够左右滚动
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: api.winHeight - $api.dom('header').offsetHeight - 52
+            },//framegroup的位置和大小
+            index: 0,
+            frames: frames
+        }, function(ret, err) {
+
+        });
+    }
+
+
+
+    function funActionSheet() {
+        var mnPopups = api.require('MNPopups');
+        mnPopups.open({
+            rect: {
+                w: 150,
+                h: 150
+            },
+            position: {
+                x: api.winWidth - 10,
+                y: 60
+            },
+            styles: {
+                mask: 'rgba(0,0,0,0.2)',
+                bg: '#eee',
+                cell: {
+                    bg: {
+                        normal: '',
+                        highlight: ''
+                    },
+                    h: 48,
+                    title: {
+                        marginL: 15,
+                        color: '#636363',
+                        size: 18,
+                    },
+                    icon: {
+                        marginL: 10,
+                        w: 25,
+                        h: 25,
+                        corner: 2
+                    }
+                },
+                pointer: {
+                    size: 7,
+                    xPercent: 90,
+                    yPercent: 0,
+                    orientation: 'downward'
+                }
+            },
+            datas: [{
+                title: '+ 添加模式',
+            }, {
+                title: '+ 添加房间',
+            }, {
+                title: '+ 添加设备',
+                // icon: 'fs://MNPopups/send.png'
+            }],
+            animation: true
+        }, function(ret) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+
+                if (ret.eventType == "click") {
+
+                    if (ret.index == 0) {
+                        var win_name = 'win_scene_add';
+                        var dir = 'scene';
+                    } else if (ret.index == 1) {
+                        var win_name = 'win_house_add';
+                        var dir = 'house';
+                    } else if (ret.index == 2) {
+                        var win_name = 'win_device_add';
+                        var dir = 'device';
+                    }
+
+
+                    api.openWin({
+                        name: win_name,
+                        url: './html/' + dir + '/' + win_name + '.html',
+                        //delay : 200,
+                        pageParam: {
+                            id: ret.index
+                        },
+                    });
+                }
+            }
+        });
+    }
+</script>

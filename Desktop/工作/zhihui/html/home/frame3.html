@@ -1,0 +1,306 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>能耗</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        /*.iconfont {
+            font-size: 1.2rem;
+        }*/
+
+        .aui-badge1 {
+            display: inline-block;
+            width: auto;
+            text-align: center;
+            min-width: 0.8rem;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            padding: 0 0.2rem;
+            font-size: 0.6rem;
+            color: #ffffff;
+            background-color: #36CF78;
+            border-radius: 0.4rem;
+            position: absolute;
+            top: 0.2rem;
+            left: 60%;
+            z-index: 99;
+        }
+
+        .box_title {
+            position: absolute;
+            height: 60px;
+            color: #c91324;
+            background: #cccccc;
+            opacity: 0.8;
+            border-radius: 15px 0;
+        }
+
+        .c1 {
+            font-size: 0.8rem;
+            color: #008efe;
+            margin-right: 10px;
+        }
+
+        .c2 {
+            color: #36CF78;
+        }
+
+        .c3 {
+            font-size: 0.8rem;
+            color: #36CF78;
+            padding-right: 0.4rem;
+        }
+
+        .aui-list .aui-list-header {
+            color: #333333;
+            background-color: #fff9e9;
+        }
+
+        .EletricityValue {
+            text-align: center;
+        }
+
+        .aui-list .aui-list-item-title {
+            font-size: 1.6rem;
+            position: relative;
+            width: 100%;
+            color: #008efe;
+        }
+
+        .aui-grid {
+            background-color: #fff;
+        }
+
+        .tr {
+            border-top: 1px solid #ededed;
+            border-right: 1px solid #ededed;
+        }
+
+        .trb {
+            border-top: 1px solid #ededed;
+            border-right: 1px solid #ededed;
+            border-bottom: 1px solid #ededed;
+        }
+
+        .t {
+            border-top: 1px solid #ededed;
+        }
+
+        .tb {
+            border-top: 1px solid #ededed;
+            border-bottom: 1px solid #ededed;
+        }
+
+        .s2 {
+            font-size: 1.9rem;
+        }
+
+        .b2 {
+            color: #e0b624;
+        }
+
+        .b3 {
+            color: #e0b624;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="aui-content " id="e_box" style="display:;">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                更新时间<span id="updated_at"></span>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-media-list-item-inner">
+
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title EletricityValue" id="E_val">Kwh </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="aui-info" style="padding-top:0">
+                    <div class="aui-info-item">
+                        <i class="iconfont c1 icon-jintian4"></i>
+                        <span id="E_today"></span>
+                    </div>
+                    <div class="aui-info-item">
+                        <i class="iconfont c1 icon-zuotian1"></i>
+                        <span id="E_yesterday"></span>
+                    </div>
+                </div>
+            </li>
+
+
+        </ul>
+    </div>
+
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-4 tr" onclick="funOpenEnergy(1,'通电回路')">
+                <div class="aui-badge1" id="openTotal">0</div>
+                <i class="iconfont s2 b2 icon-dianlutu"></i>
+                <div class="aui-grid-label">通电回路</div>
+            </div>
+            <div class="aui-col-xs-4 tr" onclick="funOpenEnergy(2,'用能概况')">
+                <i class="iconfont s2 b2 icon-zhengtigaikuang"></i>
+                <div class="aui-grid-label">用能概况</div>
+            </div>
+            <div class="aui-col-xs-4 t" onclick="funOpenEnergy(3,'用能趋势')">
+                <i class="iconfont s2 b2 icon-qushi2"></i>
+                <div class="aui-grid-label">用能趋势</div>
+            </div>
+            <div class="aui-col-xs-4 trb" onclick="funOpenEnergy(4,'安全保护')">
+                <i class="iconfont s2 b2 icon--didianyazhinengbaohu"></i>
+                <div class="aui-grid-label">安全保护</div>
+            </div>
+            <div class="aui-col-xs-4 trb" onclick="funOpenEnergy(5,'高峰用电')">
+                <i class="iconfont s2 b2 icon-dianliuxianzhi"></i>
+                <div class="aui-grid-label">高峰用电</div>
+
+            </div>
+            <div class="aui-col-xs-4 tb" onclick="funOpenEnergy(6,'节能快报')">
+
+                <i class="iconfont s2 b2 icon-jienengkuaibao"></i>
+                <div class="aui-grid-label">节能快报</div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+
+
+<script type="text/javascript">
+    apiready = function() {
+
+        //connectSocket();
+
+        getData();
+        getStatus();
+
+        setInterval(function() {
+            getData();
+        }, 120000);
+
+        setInterval(function() {
+            getStatus();
+        }, 5000);
+
+
+
+
+        api.addEventListener({
+            name: 'myLogin'
+        }, function(ret, err) {
+            getData();
+
+        });
+
+    }
+
+
+    function funOpenEnergy(id, name) {
+
+        api.openWin({
+            name: 'win_energy',
+            url: '../energy/win_energy.html',
+            pageParam: {
+                id: id,
+                name: name
+            }
+        });
+    }
+
+    function getData() {
+
+        //总表 energy/index
+        api.ajax({
+            url: post_url + "energy/index",
+            method: 'post',
+            data: {
+                values: {
+
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.code == 200) {
+                    //console.log(JSON.stringify(ret));
+                    if (ret.data.total > 0) {
+
+
+                        document.getElementById("e_box").style.display = "block";
+
+
+                        var data = ret.data.lists[0];
+
+                        $api.html($api.byId('updated_at'), data.updated_at);
+                        $api.html($api.byId('E_val'), data.EletricityValue + unit_e);
+                        $api.html($api.byId('E_today'), data.today + unit_e);
+                        $api.html($api.byId('E_yesterday'), data.yesterday + unit_e);
+                    }
+
+                }
+            } else {
+                //toLogin2();
+            }
+        });
+
+
+    }
+
+    function getStatus() {
+
+
+        //通道状态 channel/status
+        api.ajax({
+            url: post_url + "channel/status",
+            method: 'post',
+            data: {
+                values: {
+                    status: 1
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+
+                if (ret.code == 200) {
+                    var total = ret.data.total;
+
+                    $api.html($api.byId('openTotal'), total);
+                }
+
+            } else {
+                //toLogin2();
+            }
+        });
+    }
+</script>

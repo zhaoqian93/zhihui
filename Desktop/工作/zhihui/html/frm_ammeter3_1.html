@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用电报表</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
+    <style>
+        .ico-img1 {
+            height: 1.5rem;
+        }
+
+        .t_title {
+            text-align: center;
+        }
+
+        .aui-list-header2 {
+            background-color: #8BC5EC;
+            color: #FFFFFF;
+            position: relative;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.75rem;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            /*-webkit-justify-content: space-between;
+            justify-content: space-between;*/
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="aui-bar aui-bar-btn" id="item_tab" style="width:80%;margin-top:5px;">
+        <div class="aui-bar-btn-item aui-active">日</div>
+        <div class="aui-bar-btn-item">月</div>
+        <div class="aui-bar-btn-item">年</div>
+    </div>
+
+
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+
+<script type="text/javascript">
+    apiready = function() {
+        //getData();
+
+        var UIBarChart = api.require('UIBarChart');
+        UIBarChart.open({
+                rect: {
+                    x: 0,
+                    y: 46,
+                    w: api.frameWidth,
+                    h: 340
+                },
+                yAxis: {
+                    max: 60,
+                    min: 0,
+                    step: 10
+                },
+                text: {
+
+                    xAxis: '小时', //（可选项）字符串类型；x 轴标注文字；默认：X轴
+                    yAxis: '用电' //（可选项）字符串类型；y 轴标注文字；默认：Y轴
+
+                },
+                data: [{
+                        xAxis: '1',
+                        yAxis: 20
+                    }, {
+                        xAxis: '2',
+                        yAxis: 0
+                    }, {
+                        xAxis: '3',
+                        yAxis: 16
+                    }, {
+                        xAxis: '4',
+                        yAxis: 36
+                    }, {
+                        xAxis: '5',
+                        yAxis: 26
+                    }, {
+                        xAxis: '6',
+                        yAxis: 46
+                    }, {
+                        xAxis: '7',
+                        yAxis: 36
+                    }, {
+                        xAxis: '8',
+                        yAxis: 11
+                    }, {
+                        xAxis: '9',
+                        yAxis: 8
+                    }, {
+                        xAxis: '10',
+                        yAxis: 56
+                    }, {
+                        xAxis: '11',
+                        yAxis: 61
+                    }, {
+                        xAxis: '12',
+                        yAxis: 35
+                    }, {
+                        xAxis: '13',
+                        yAxis: 16
+                    }, {
+                        xAxis: '14',
+                        yAxis: 36
+                    }, {
+                        xAxis: '15',
+                        yAxis: 26
+                    }, {
+                        xAxis: '16',
+                        yAxis: 46
+                    }, {
+                        xAxis: '17',
+                        yAxis: 36
+                    }, {
+                        xAxis: '18',
+                        yAxis: 11
+                    }, {
+                        xAxis: '19',
+                        yAxis: 8
+                    }, {
+                        xAxis: '20',
+                        yAxis: 56
+                    }, {
+                        xAxis: '21',
+                        yAxis: 61
+                    }, {
+                        xAxis: '22',
+                        yAxis: 35
+                    }
+
+                ],
+                styles: {
+                    yAxis: {
+                        width: 30,
+                        bg: '#B2DFEE',
+                        markColor: '#fff',
+                        markSize: 12
+                    },
+                    xAxis: {
+                        height: 30,
+                        bg: '#B2DFEE',
+                        markColor: '#fff',
+                        markSize: 12
+                    },
+                    coordinate: {
+                        bg: '#FFFFFF',
+                    },
+                    bar: {
+                        width: 12,
+                        bg: '#EFEFEF',
+                        tint: '#8BC5EC',
+                        interval: 5
+                    }
+                },
+                fixedOn: api.frameName,
+                fixed: false
+            },
+            function(ret, err) {
+                // if (ret) {
+                //     alert(JSON.stringify(ret));
+                // } else {
+                //     alert(JSON.stringify(err));
+                // }
+            });
+
+
+    };
+
+
+
+    function getData() {
+        api.ajax({
+            url: post_url + "area/index",
+            method: 'post',
+            data: {
+                values: {
+                    pid: api.pageParam.id
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(ret.data.size);
+
+
+                var data = ret.data.lists;
+                var text = $api.text($api.byId('doT_list'));
+                var evalText = doT.template(text);
+                $api.html($api.byId('item_list'), evalText(data));
+
+
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript" src="../script/aui-tab.js" ></script>
+<script type="text/javascript">
+    var tab = new auiTab({
+        element:document.getElementById("item_tab"),
+        index:1,
+        repeatClick:false
+    },function(ret){
+        //console.log(JSON.stringify(ret));
+    });
+</script>

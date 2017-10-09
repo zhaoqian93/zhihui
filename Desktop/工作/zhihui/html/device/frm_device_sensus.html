@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>第六感</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        .iconfont {
+            color: #20BCFC;
+            font-size: 1.5rem;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 2.5rem;
+        }
+
+        .c1 {
+            color: #36CF78;
+        }
+
+        .aui-list .aui-list-header {
+            color: #333333;
+            background-color: #fff9e9;
+        }
+
+        .b1 {
+            width: 100%;
+            height: 5px;
+            background: -webkit-linear-gradient(left, #6cf, #0f0, #f70, #c03);
+        }
+
+        .b2 {
+            width: 100%;
+            height: 5px;
+            background: -webkit-linear-gradient(left, #f70, #0f0, #6cf);
+        }
+
+        .aui-list .aui-list-item-media {
+            padding: 0.6rem 0;
+        }
+
+        .item {
+            float: left;
+            clear: both;
+            margin-bottom: 3px;
+        }
+
+        .dot-bottom {
+            font-size: 0;
+            line-height: 0;
+            border-width: 5px;
+            border-color: #20BCFC;
+            border-bottom-width: 0;
+            border-style: dashed;
+            border-top-style: solid;
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }
+
+        .show_val {
+            width: 100%;
+            font-size: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aui-refresh-content">
+        <div class="aui-content  aui-margin-b-15">
+            <ul class="aui-list aui-media-list">
+                <li class="aui-list-header">
+                    最后更新:<span id="updated_at"></span>
+                </li>
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-wendu"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">温度</div>
+                                <div class="aui-list-item-right" id="wendu_txt">闷热</div>
+                            </div>
+                            <div class="aui-list-item-text1">
+                                <div style="left:70%; position: relative;">
+                                    <div id="wendu" class="show_val">0</div>
+                                    <div class="item dot-bottom"></div>
+                                </div>
+                                <p class="b1"></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-shidu"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">湿度</div>
+                                <div class="aui-list-item-right" id="shidu_txt">舒适</div>
+                            </div>
+                            <div class="aui-list-item-text1">
+                                <div style="left:50%; position: relative;">
+                                    <div id="shidu" class="show_val">0</div>
+                                    <div class="item dot-bottom"></div>
+                                </div>
+                                <p class="b2"></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-daqiyali"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">大气压</div>
+                                <div class="aui-list-item-right" id="daqiya">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-guangxian"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">光照</div>
+                                <div class="aui-list-item-right" id="guangzhao">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-pm"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">PM1</div>
+                                <div class="aui-list-item-right" id="pm1">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon--"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">PM10</div>
+                                <div class="aui-list-item-right" id="pm10">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-anonymous-iconfont"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">PM2.5</div>
+                                <div class="aui-list-item-right" id="pm25">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-icon220"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">烟雾</div>
+                                <div class="aui-list-item-right" id="yanwu">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-jiaquanhanliang"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">甲醛</div>
+                                <div class="aui-list-item-right" id="jiaquan">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-jiatingchengyuan1"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">人员信息</div>
+                                <div class="aui-list-item-right" id="renyuan">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-zhendong"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">振动强度</div>
+                                <div class="aui-list-item-right" id="zhendong">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-qingxie"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">X轴倾斜角</div>
+                                <div class="aui-list-item-right" id="x_zhou">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-qingxie"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">Y轴倾斜角</div>
+                                <div class="aui-list-item-right" id="y_zhou">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <i class="iconfont icon-qingxie"></i>
+                        </div>
+                        <div class="aui-list-item-inner ">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14">Z轴倾斜角</div>
+                                <div class="aui-list-item-right" id="z_zhou">0</div>
+                            </div>
+                            <div class="aui-list-item-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+
+
+<script type="text/javascript">
+    var winWidth = null;
+    apiready = function() {
+        winWidth = api.winWidth;
+        //console.log(api.pageParam.id);
+        getData();
+        //console.log(winWidth);
+    };
+
+
+    function getData() {
+        api.ajax({
+            url: post_url + "sensus/show",
+            method: 'post',
+            data: {
+                values: {
+                    dev_id: api.pageParam.id
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(JSON.stringify(ret.data.lists[0]));
+                var item = ret.data.lists[0];
+                $api.html($api.byId('updated_at'), item.updated_at);
+                $api.html($api.byId('wendu'), item.wendu + unit_temp);
+                $api.html($api.byId('shidu'), item.shidu + unit_shidu);
+                $api.html($api.byId('pm1'), item.pm1 + unit_pm);
+                $api.html($api.byId('pm10'), item.pm10 + unit_pm);
+                $api.html($api.byId('pm25'), item.pm25 + unit_pm);
+                $api.html($api.byId('daqiya'), item.daqiya + unit_daqiya);
+                $api.html($api.byId('guangzhao'), item.guangzhao);
+
+                $api.html($api.byId('renyuan'), item.renyuan);
+                $api.html($api.byId('zhendong'), item.zhendong);
+
+                $api.html($api.byId('yanwu'), item.yanwu);
+                $api.html($api.byId('jiaquan'), item.jiaquan);
+
+
+                $api.html($api.byId('x_zhou'), item.x_zhou);
+                $api.html($api.byId('y_zhou'), item.y_zhou);
+                $api.html($api.byId('z_zhou'), item.z_zhou);
+
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+<script src="../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>公司能管</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    .iconfont{
+      font-size: 1.2rem;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="iconfont icon-fanhui2"></span>
+            </a>
+            <div class="aui-title">公司能耗实时观测台</div>
+            <a class="aui-pull-right aui-btn " onclick="funActionSheet()">
+                <span class="iconfont icon-mulu"></span>
+            </a>
+        </header>
+
+        <div id="main" class="flex-con">
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        $api.fixStatusBar($api.dom('header'));
+        //$api.dom('.title').innerHTML = api.pageParam.name;
+        api.openFrame({
+            name: 'frm_ammeter3',
+            url: './frm_ammeter3.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            bounces: true,
+            pageParam: {
+                //name: api.pageParam.name
+            }
+        });
+    };
+
+    function funActionSheet() {
+        var mnPopups = api.require('MNPopups');
+        mnPopups.open({
+            rect: {
+                w: 120,
+                h: 110
+            },
+            position: {
+                x: api.winWidth - 10,
+                y: 60
+            },
+            styles: {
+                mask: 'rgba(0,0,0,0.2)',
+                bg: '#eee',
+                cell: {
+                    bg: {
+                        normal: '',
+                        highlight: ''
+                    },
+                    h: 35,
+                    title: {
+                        marginL: 15,
+                        color: '#636363',
+                        size: 16,
+                    },
+                    // icon: {
+                    //     marginL: 10,
+                    //     w: 25,
+                    //     h: 25,
+                    //     corner: 2
+                    // }
+                },
+                pointer: {
+                    size: 7,
+                    xPercent: 90,
+                    yPercent: 0,
+                    orientation: 'downward'
+                }
+            },
+            datas: [{
+                title: '实时数据',
+            }, {
+                title: '用电报表',
+            }, {
+                title: '能耗分析',
+                // icon: 'fs://MNPopups/send.png'
+            }],
+            animation: true
+        }, function(ret) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+
+                if(ret.eventType=="click"){
+                  //console.log(ret.index);
+
+                  api.openWin({
+                		name : 'win_ammeter3_menu',
+                		url : './win_ammeter3_menu.html',
+                		//delay : 200,
+                    pageParam: {
+                        id: ret.index
+                    },
+                	});
+                }
+            }
+        });
+    }
+</script>

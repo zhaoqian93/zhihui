@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>二级区域</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+
+        .ico-img1 {
+            height: 1.5rem;
+        }
+
+        .t_title {
+            text-align: center;
+        }
+
+        .iconfont {
+            color: #20BCFC;
+        }
+
+        .iconfont_c1 {
+            color: #999999;
+        }
+
+        .c1 {
+            color: #ABDF84;
+        }
+
+        .c2 {
+            color: #DB5149;
+        }
+
+        .c3 {
+            color: #217AEE;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="aui-content aui-margin-b-15" style="display:none;">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">自动模式</div>
+                    <div class="aui-list-item-right">
+                        <input type="checkbox" class="aui-switch" checked>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="aui-card-list">
+
+        <div class="aui-card-list-content">
+            <img src="../image/app/area_1.jpg" />
+        </div>
+
+        <div class="aui-card-list-footer">
+            <div class="t_title">
+                <i class="iconfont c1 iconfont15 icon-wendu"></i>
+                <span id="sensus_wendu">28.5°C</span>
+            </div>
+            <div class="t_title">
+                <i class="iconfont c1 iconfont15 icon-shidu"></i>
+                <span id="sensus_shidu">76%RH</span>
+            </div>
+            <div class="t_title">
+                <i class="iconfont c1 iconfont15 icon-anonymous-iconfont"></i>
+                <span id="sensus_pm">19ppm</span>
+            </div>
+            <div class="t_title">
+                <i class="iconfont c1 iconfont15 icon-daqiyali"></i>
+                <span id="sensus_jiaquan">101.01kPa</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="aui-grid" style="border-top:5px solid #EFEFEF">
+        <div class="aui-row">
+
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 c2 icon-shangban"></i>
+                <div class="aui-grid-label">上班模式</div>
+            </div>
+
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 c2 icon-xiaban1"></i>
+                <div class="aui-grid-label">下班模式</div>
+            </div>
+
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 c2 icon-wuxiu"></i>
+                <div class="aui-grid-label">午休模式</div>
+            </div>
+
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 c2 icon-icon79"></i>
+                <div class="aui-grid-label">会客模式</div>
+            </div>
+
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 c2 icon-touyingyi"></i>
+                <div class="aui-grid-label">投影模式</div>
+            </div>
+
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 icon-jia"></i>
+                <div class="aui-grid-label">自定义</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="aui-grid" style="border-top:5px solid #EFEFEF">
+        <div class="aui-row">
+            <div class="aui-col-xs-3" onclick="funOpenDevice('air',10)">
+                <i class="iconfont iconfont20 c3 icon-kongtiao"></i>
+                <div class="aui-grid-label">空调</div>
+            </div>
+            <div class="aui-col-xs-3" onclick="funOpenDevice('light',10)">
+                <i class="iconfont iconfont20 c3 icon-dengguang"></i>
+                <div class="aui-grid-label">氙气灯</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 c3 icon-rentiganying"></i>
+                <div class="aui-grid-label">人体感应</div>
+            </div>
+            <div class="aui-col-xs-3" onclick="funOpenDevice('sensus',10)">
+                <i class="iconfont iconfont20 c3 icon-chuanganqi"></i>
+                <div class="aui-grid-label">第六感</div>
+            </div>
+            <div class="aui-col-xs-3" onclick="funOpenDevice('tv',10)">
+                <i class="iconfont iconfont20 c3 icon-dianshi"></i>
+                <div class="aui-grid-label">电视</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="iconfont iconfont20 c3 icon-touying1"></i>
+                <div class="aui-grid-label">投影</div>
+            </div>
+            <div class="aui-col-xs-3" onclick="funOpenDevice('video',10)">
+                <i class="iconfont iconfont20 c3 icon-shexiangtou"></i>
+                <div class="aui-grid-label">摄像头</div>
+            </div>
+            <div class="aui-col-xs-3" onclick="funOpenDevice('ammeter',10)">
+                <i class="iconfont iconfont20 c3 icon-137"></i>
+                <div class="aui-grid-label">能耗</div>
+            </div>
+        </div>
+    </section>
+
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+    <div class="aui-col-xs-4" onclick="funOpenAreaDisplay({{=value.id}})">
+        <i class="aui-iconfont aui-icon-home"></i>
+        <div class="aui-grid-label">{{=value.name}}</div>
+    </div>
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    apiready = function() {
+
+        //console.log(api.pageParam.id);
+        //getData();
+    };
+
+    function funOpenDevice(vtype,dev_id) {
+        api.openWin({
+            name: 'win_display_device_'+vtype,
+            url: './win_display_device_'+vtype+'.html',
+            pageParam: {
+                id: dev_id
+            }
+        });
+    }
+
+
+    function getData() {
+        api.ajax({
+            url: post_url + "area/index",
+            method: 'post',
+            data: {
+                values: {
+                    pid: api.pageParam.id
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+                //console.log(ret.data.size);
+
+
+                var data = ret.data.lists;
+                var text = $api.text($api.byId('doT_list'));
+                var evalText = doT.template(text);
+                $api.html($api.byId('item_list'), evalText(data));
+
+
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>

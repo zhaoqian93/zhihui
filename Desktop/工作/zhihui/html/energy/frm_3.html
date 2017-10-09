@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用电趋势</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        .aui-grid [class*=aui-col-] {
+            padding: 0 0;
+        }
+
+        .aui-list .aui-list-header {
+            color: #000000;
+            background-color: #fff9e9;
+        }
+
+        .aui-list .aui-list-item-right {
+            font-size: 0.9rem;
+            color: #0092fe;
+        }
+
+        .bl {
+            border-left: 1px solid #f5f5f5;
+        }
+
+        .aui-list .aui-list-item-title {
+            font-size: 0.6rem;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+
+
+
+    <div id="echarts1" style="height:260px;top:5px;left:5px;">
+
+    </div>
+
+
+    <div id="echarts2" style="height:260px;top:5px;left:5px;">
+
+    </div>
+
+
+
+
+
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/echarts.min.js"></script>
+
+
+
+
+
+<script type="text/javascript">
+    apiready = function() {
+
+
+        //getStatus();
+
+        setInterval(function() {
+            //getStatus();
+        }, 5000);
+
+
+
+    }
+
+
+    function getStatus() {
+
+
+        //通道状态 channel/status
+        api.ajax({
+            url: post_url + "channel/status",
+            method: 'post',
+            data: {
+                values: {
+                    status: 1
+                }
+            },
+
+            headers: {
+                'Authorization': 'Bearer ' + $api.getStorage('access_token')
+            },
+        }, function(ret, err) {
+            if (ret) {
+
+                if (ret.code == 200) {
+                    var data = ret.data.lists;
+                    //console.log(JSON.stringify(data));
+                    var text = $api.text($api.byId('doT_list2'));
+                    var evalText = doT.template(text);
+                    $api.html($api.byId('item_list2'), evalText(data));
+                }
+
+            } else {
+                //toLogin2();
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('echarts1'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            // show : false,
+            padding:0,
+            // itemGap:10,
+            text: '24小时用电量分布',
+            subtext: ''
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                // saveAsImage: {}
+            }
+        },
+        xAxis: {
+          name: '时',
+            type: 'category',
+            boundaryGap: false,
+            data: ['00:00', '01:15', '02:30', '03:45', '05:00', '06:15', '07:30', '08:45', '10:00', '11:15', '12:30', '13:45', '15:00', '16:15', '17:30', '18:45', '20:00', '21:15', '22:30', '23:45']
+        },
+        yAxis: {
+
+          name: '电量(kW.h)',
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} '
+            },
+            axisPointer: {
+                snap: true
+            }
+        },
+        visualMap: {
+            show: false,
+            dimension: 0,
+            pieces: [{
+                lte: 6,
+                color: 'green'
+            }, {
+                gt: 6,
+                lte: 8,
+                color: 'red'
+            }, {
+                gt: 8,
+                lte: 16,
+                color: 'green'
+            }, {
+                gt: 16,
+                lte: 18,
+                color: 'red'
+            }, {
+                gt: 18,
+                color: 'green'
+            }]
+        },
+        series: [{
+            name: '用电量',
+            type: 'line',
+            smooth: true,
+            data: [2, 5, 3, 1, 11, 1.1, 1.2, 5, 4, 5, 8, 9, 1, 2, 4, 5, 8, 7, 6, 4],
+            markArea: {
+                data: [
+                    [{
+                        name: '早高峰',
+                        xAxis: '07:30'
+                    }, {
+                        xAxis: '10:00'
+                    }],
+                    [{
+                        name: '晚高峰',
+                        xAxis: '20:00'
+                    }, {
+                        xAxis: '22:30'
+                    }]
+                ]
+            }
+        }]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+    var myChart2 = echarts.init(document.getElementById('echarts2'));
+    var option2 = {
+        title: {
+            // show : false,
+            padding: 0,
+            // itemGap:50,
+            text: '本年度每月用电量',
+            subtext: ''
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        toolbox: {
+            feature: {
+                // dataView: {show: true, readOnly: false},
+                // magicType: {show: true, type: ['line', 'bar']},
+                // restore: {show: true},
+                // saveAsImage: {show: false}
+            }
+        },
+        legend: {
+            data: ['耗电量', '平均温度'],
+            padding: 40,
+
+        },
+        xAxis: [{
+            type: 'category',
+            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月'],
+            axisPointer: {
+                type: 'shadow'
+            }
+        }],
+        yAxis: [{
+            type: 'value',
+            name: '电量(kW.h)',
+            min: 0,
+            max: 250,
+            interval: 50,
+            axisLabel: {
+                formatter: '{value} '
+            }
+        }, {
+            type: 'value',
+            name: '温度(°C)',
+            min: 0,
+            max: 50,
+            interval: 10,
+            axisLabel: {
+                formatter: '{value} '
+            }
+        }],
+        series: [{
+            name: '耗电量',
+            type: 'bar',
+            data: [128.0, 88.9, 79.0, 123.2, 125.6, 136.7, 135.6, 162.2]
+        }, {
+            name: '平均温度',
+            type: 'line',
+            yAxisIndex: 1,
+            data: [9.0, 12.2, 13.3, 18.5, 16.3, 20.2, 25.3, 33.4, 30.0]
+        }]
+    };
+    myChart2.setOption(option2);
+</script>

@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>房间</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            /*display: table-cell;
+            position: relative;
+            text-align: center;
+            vertical-align: middle;*/
+            padding: 0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                客厅
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">顶灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">阳台灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">玄关灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-chuanglian"></i>
+                <div class="aui-grid-label">窗帘</div>
+            </div>
+            <div class="aui-col-xs-2" onclick="funOpenDevice('tv',141)">
+                <i class="iconfont icon-dianshi"></i>
+                <div class="aui-grid-label">电视</div>
+            </div>
+            <div class="aui-col-xs-2" onclick="funOpenDevice('air',141)">
+                <i class="iconfont icon-kongtiao1"></i>
+                <div class="aui-grid-label">空调</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                主卧
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">走廊灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">顶灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-bideng"></i>
+                <div class="aui-grid-label">壁灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dianshi"></i>
+                <div class="aui-grid-label">电视</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-kongtiao1"></i>
+                <div class="aui-grid-label">空调</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                次卧
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">顶灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-bideng"></i>
+                <div class="aui-grid-label">壁灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-kongtiao1"></i>
+                <div class="aui-grid-label">空调</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                书房
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">顶灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-bideng"></i>
+                <div class="aui-grid-label">壁灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-kongtiao1"></i>
+                <div class="aui-grid-label">空调</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                卫生间
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+
+          <div class="aui-col-xs-2">
+              <i class="iconfont icon-dengguang"></i>
+              <div class="aui-grid-label">主卫灯</div>
+          </div>
+          <div class="aui-col-xs-2">
+              <i class="iconfont icon-dengguang"></i>
+              <div class="aui-grid-label">次卫灯</div>
+          </div>
+          <div class="aui-col-xs-2">
+              <i class="iconfont icon-reshuiqi1"></i>
+              <div class="aui-grid-label">热水器</div>
+          </div>
+
+        </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                厨房
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">筒灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-chouyouyanji"></i>
+                <div class="aui-grid-label">抽油烟机</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-paifengshan"></i>
+                <div class="aui-grid-label">排风扇</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-diancilu"></i>
+                <div class="aui-grid-label">电磁炉</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-reshuiqi"></i>
+                <div class="aui-grid-label">暖宝</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-bingxiang"></i>
+                <div class="aui-grid-label">冰箱</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                餐厅
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">顶灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">灯槽灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-dengguang"></i>
+                <div class="aui-grid-label">窗台灯</div>
+            </div>
+            <div class="aui-col-xs-2">
+                <i class="iconfont icon-kongtiao1"></i>
+                <div class="aui-grid-label">空调</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                阳台
+            </li>
+        </ul>
+    </div>
+    <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row">
+          <div class="aui-col-xs-2">
+              <i class="iconfont icon-bideng"></i>
+              <div class="aui-grid-label">壁灯</div>
+          </div>
+          <div class="aui-col-xs-2">
+              <i class="iconfont icon-xiyiji"></i>
+              <div class="aui-grid-label">洗衣机</div>
+          </div>
+          <div class="aui-col-xs-2">
+              <i class="iconfont icon-liangyijia"></i>
+              <div class="aui-grid-label">晾衣架</div>
+          </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    var token = null;
+    apiready = function() {
+
+
+
+        // api.openFrame({
+        //     name: 'win_home',
+        //     url: './html/win_home.html',
+        //     rect: {
+        //         x: 0,
+        //         y: $api.dom('header').offsetHeight,
+        //         w: api.winWidth,
+        //         h: $api.dom('#main').offsetHeight
+        //     }
+        // });
+
+        // token = get_token();
+        // if (token == null) {
+        //     toLogin();
+        //     return false;
+        // }
+
+    };
+
+    function funOpenDevice(vtype,dev_id) {
+        api.openWin({
+            name: 'win_display_device_'+vtype,
+            url: '../win_display_device_'+vtype+'.html',
+            pageParam: {
+                id: dev_id
+            }
+        });
+    }
+</script>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>设备清单</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <style>
+        .iconfont {
+            font-size: 1.2rem;
+        }
+
+        .c2 {
+            color: #36CF78;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="aui-refresh-content">
+        <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-media-list" id="item_list">
+            </ul>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+
+
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+    <li class="aui-list-item aui-list-item-middle" onclick="toShowDevice({{=value.id}},{{=value.vtype}},'{{=value.title}}')">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media">
+                <img src="../../image/app/{{=value.vtype}}.png" class="aui-img-round aui-list-img-sm">
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title ">{{=value.title}}</div>
+                    <div class="aui-list-item-right">
+                        {{? value.is_online==1 }}
+                        <i class="iconfont c2 icon-wifi"></i> {{??}}
+                        <i class="iconfont icon-wifi"></i> {{?}}
+                    </div>
+                </div>
+                <div class="aui-list-item-text">
+                    {{=value.device_name}}
+                </div>
+            </div>
+        </div>
+    </li>
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    apiready = function() {
+        getData();
+
+
+
+    };
+
+    function toShowDevice(id, vtype, name) {
+
+        api.openWin({
+            name: 'win_device_channel',
+            url: './win_device_channel.html',
+            pageParam: {
+                id: id,
+                vtype: vtype,
+                name: name
+            }
+        });
+
+    }
+
+
+    function getData() {
+      var url = post_url + "device/index";
+      runAjax(url, {}, function(ret, err) {
+          if (ret.code == 200) {
+              var data = ret.data.lists;
+              //console.log(JSON.stringify(data));
+              dotTpl('doT_list', 'item_list', data);
+          } else {
+              //toLogin2();
+              //console.log(JSON.stringify(err));
+          }
+      });
+    }
+
+
+</script>
+
+
+<script src="../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

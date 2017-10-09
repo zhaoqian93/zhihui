@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .aui-input,
+        input[type="text"],
+        input[type="password"] {
+            height: 3.2rem;
+            font-size: 1.2rem;
+        }
+
+        .iconfont {
+            font-size: 1.3rem;
+            width: 2.2rem;
+            color: #666666;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <div style="height:160px; text-align:center;line-height:160px;">
+            <h1>三川智家</h1>
+        </div>
+        <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-form-list">
+
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label-icon">
+                            <i class="iconfont icon-liuzhanghao"></i>
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input type="text" id="username" value="suntrans" placeholder="请输入账号">
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label-icon">
+                            <i class="iconfont icon-mima"></i>
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input type="password" id="password" value="111111" placeholder="请输入密码">
+                        </div>
+                        <div class="aui-list-item-label-icon">
+                            <i class="aui-iconfont aui-icon-display"></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                        <div class="aui-btn aui-btn-primary aui-btn-block" onclick="login()">登录</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="aui-bar-tab-item aui-active" tapmode>
+
+            <div class="aui-bar-tab-label">
+                <p>三川智控工程装备有限公司</p>
+                www.suntrans.net
+            </div>
+        </div>
+
+    </footer>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+
+        token = get_token();
+        if (token) {
+            api.openWin({
+                name: 'win_index',
+                url: '../../index.html',
+                allowEdit: true
+            });
+            return false;
+        }
+
+    };
+
+    function login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        api.ajax({
+            url: login_url,
+            method: 'post',
+            data: {
+                values: {
+                    'grant_type': 'password',
+                    'client_id': client_id,
+                    'client_secret': client_secret,
+                    'username': username,
+                    'password': password
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log(ret.access_token);
+                var access_token = ret.access_token;
+                var expires_in = ret.expires_in;
+                //console.log(expires_in);
+                $api.setStorage('access_token', access_token);
+
+                //getuserinfo();
+                api.sendEvent({
+                    name: 'myLogin',
+                    extra: {
+
+                    }
+                });
+                api.sendEvent({
+                    name: 'myLoginInfo',
+                    extra: {
+
+                    }
+                });
+                //关闭登录
+                close_win('login');
+                //open_win('index');
+                //api.closeWin();
+
+                // api.openWin({
+                //     name: 'win_index',
+                //     url: '../../index.html',
+                // })
+
+
+            } else {
+                //console.log(JSON.stringify(err))
+                var code = err.code;
+                var status = err.statusCode;
+
+
+                if (status == 401) {
+                    alert('验证失败');
+                } else {
+                    alert('服务器未响应');
+                }
+            }
+
+
+        });
+    }
+</script>

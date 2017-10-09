@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>照明</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+
+    <style>
+        .iconfont {
+            font-size: 1.5rem;
+        }
+
+        .c1 {
+            color: #ed9157;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aui-refresh-content">
+        <section class="aui-grid">
+            <div class="aui-row" id="item_list">
+            </div>
+        </section>
+    </div>
+
+
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+
+
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+
+
+    <div class="aui-col-xs-4" onclick="funSwitchSlc({{=value.id}},{{=value.device_vtype}},{{=value.dev_id}},{{=value.number}},{{=value.status}})">
+        <i class="iconfont icon-shangyezhaoming {{? value.status==1 }}  c1  {{?}}"></i>
+        <div class="aui-grid-label">{{=value.name}}</div>
+    </div>
+
+
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    apiready = function() {
+        getData();
+
+        connectSocket();
+
+
+    };
+
+    function onSocketMessage(ret) {
+
+        getData();
+
+
+    }
+
+    function getData() {
+        var url = post_url + "channel/light";
+        var values = {
+            values: {
+                // vtype: 'tv'
+            }
+        };
+        runAjax(url, values, function(ret, err) {
+            if (ret.code == 200) {
+                var data = ret.data.lists;
+                //console.log(JSON.stringify(data));
+                dotTpl('doT_list', 'item_list', data);
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+<script src="../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function(ret) {
+        if (ret.status == "success") {
+            setTimeout(function() {
+                getData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    })
+</script>

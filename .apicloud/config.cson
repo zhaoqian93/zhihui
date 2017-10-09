@@ -1,0 +1,7 @@
+"*":
+  apicloud:
+    autoSync: true
+  minimap:
+    plugins:
+      "git-diff": true
+      "git-diffDecorationsZIndex": 0

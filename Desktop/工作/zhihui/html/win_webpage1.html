@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>公司能管</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    </style>
+</head>
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical" >
+        <header class="aui-bar aui-bar-nav">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin();">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">公司能耗实时观测台</div>
+        </header>
+
+        <div id="main" class="flex-con" >
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        $api.fixStatusBar( $api.dom('header') );
+        //$api.dom('.title').innerHTML = api.pageParam.name;
+        api.openFrame({
+            name: 'frm_mine',
+            url: './frm_mine.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            bounces : true,
+            pageParam: {
+                //name: api.pageParam.name
+             }
+        });
+    };
+
+    function funActionSheet(){
+        api.actionSheet({
+            title: '底部弹出框',
+            cancelTitle: '取消',
+            destructiveTitle: '红色警告按钮',
+            buttons: ['按钮1','按钮2','按钮3']
+        },function(ret,err){
+            // api.alert({
+            //     msg: '你刚点击了'+ret.buttonIndex
+            // });
+        });
+    }
+</script>

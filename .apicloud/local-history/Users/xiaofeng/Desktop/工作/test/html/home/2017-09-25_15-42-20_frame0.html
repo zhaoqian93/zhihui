@@ -1,0 +1,395 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我家</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .aui-list .aui-list-item {
+            min-height: 4.4rem;
+        }
+
+        .aui-list .aui-list-item-title {
+            font-size: 1.0rem;
+        }
+
+        .user_num {
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            width: 6rem;
+            height: 33px;
+            color: #FFFFFF;
+            font-size: 0.9rem;
+        }
+
+        .aui-badge1 {
+            display: inline-block;
+            width: auto;
+            text-align: center;
+            min-width: 1.2rem;
+            height: 1.2rem;
+            line-height: 1.2rem;
+            /*padding: 0 0.2rem;*/
+            font-size: 0.9rem;
+            color: #ffffff;
+            background-color: #ff6929;
+            border-radius: 0.6rem;
+            /*position: absolute;*/
+            /*top: -0.2rem;*/
+            /*left: 60%;*/
+            z-index: 99;
+        }
+
+        .aui-card-list {
+            margin-bottom: 0rem;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.5rem 0;
+        }
+
+        .aui-grid .aui-grid-label {
+            margin-top: 0.1rem;
+        }
+
+        .addright {
+            float: right;
+            margin-right: 20px;
+            /*margin-top: 5px;*/
+        }
+
+        .s1 {
+            font-size: 1.5rem;
+            color: #666666;
+        }
+
+        .b1 {
+            border-bottom: 1px solid #DDDDDD;
+            border-top: 8px solid #EFEFEF;
+        }
+
+        .b2 {
+            border-top: 4px solid #EFEFEF;
+        }
+
+        .box1 {
+            color: #ed9157;
+            font-size: 1.6rem;
+        }
+
+        .aui-row span {
+            width: 2.8rem;
+            height: 2.8rem;
+        }
+
+        .c4 {
+            font-size: 1.5rem;
+        }
+
+        .light{
+          color: #ed9157;
+        }
+
+        .tv {
+            color: #ab6b45;
+        }
+
+        .air {
+            color: #133984;
+        }
+
+        .win {
+            color: #692613;
+        }
+
+        .video {
+            color: #015584;
+        }
+        .radar{
+          color: #FF0000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="aui-content">
+        <div class="aui-card-list">
+            <div class="aui-card-list-content" onclick="funActionSheet()">
+                <img id="img_cover" src="../../image/app/home.png" />
+            </div>
+            <div class="user_num" onclick="openWinMember()">家庭成员<span class="aui-badge1" id="num_people"></span>名</div>
+        </div>
+
+        <div class="aui-card-list b1">
+            <div class="addright" onclick="funOpenSceneList()">
+                <i class="iconfont s1 icon-gengduo"></i>
+            </div>
+            <div class="aui-card-list-header">
+                模式
+            </div>
+        </div>
+    </section>
+
+    <section class="aui-grid">
+        <div class="aui-row" id="item_list">
+
+
+        </div>
+    </section>
+
+    <section class="aui-content">
+        <div class="aui-card-list b2">
+
+        </div>
+    </section>
+    <section class="aui-grid">
+        <div class="aui-row">
+
+          <div class="aui-col-xs-3" onclick="openWinDevice('light')">
+              <i class="iconfont c4 light icon-dengpao"></i>
+              <div class="aui-grid-label">照明</div>
+          </div>
+
+            <div class="aui-col-xs-3" onclick="openWinDevice('tv')">
+                <i class="iconfont c4 tv icon-dianshi2"></i>
+                <div class="aui-grid-label">电视</div>
+            </div>
+
+            <div class="aui-col-xs-3" onclick="openWinDevice('air')">
+                <i class="iconfont c4 air icon-tianjiashebeikongtiao"></i>
+                <div class="aui-grid-label">空调</div>
+            </div>
+
+            <div class="aui-col-xs-3" onclick="openWinDevice('win')">
+                <i class="iconfont c4 win icon-chuanglian"></i>
+                <div class="aui-grid-label">窗帘</div>
+            </div>
+
+            <div class="aui-col-xs-3" onclick="openWinDevice('vod')">
+                <i class="iconfont c4 video icon-shexiangtou2"></i>
+                <div class="aui-grid-label">监控</div>
+            </div>
+            <div class="aui-col-xs-3" onclick="openWinDevice('radar')">
+                <i class="iconfont c4 radar icon-rentiganyingxitong"></i>
+                <div class="aui-grid-label">雷达</div>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/config.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+
+<script id="doT_list" type="text/x-dot-template">
+    {{? it && it.length > 0}} {{~ it :value}}
+
+    <div class="aui-col-xs-3" onclick="funOpenScene({{=value.uid}},'{{=value.title}}')">
+        <span style="background: url('{{=value.imgPath}}');background-size: 100% 100%;"></span>
+        <div class="aui-grid-label">{{=value.title}}</div>
+    </div>
+
+    {{~}} {{?}}
+</script>
+
+<script type="text/javascript">
+    apiready = function() {
+
+        // var frameWidth = api.frameWidth;
+        // console.log(frameWidth);
+        // var frameHeight = api.frameHeight;
+        // console.log(frameHeight);
+        getDataScene();
+        getCover();
+
+        api.addEventListener({
+            name: 'myLogin'
+        }, function(ret, err) {
+            getDataScene();
+        });
+
+        api.addEventListener({
+            name: 'sceneRefresh'
+        }, function(ret, err) {
+            getDataScene();
+        });
+
+        api.addEventListener({
+            name: 'coverRefresh'
+        }, function(ret, err) {
+            getCover();
+        });
+
+
+
+    }
+
+    function funOpenScene(id, name) {
+        api.openWin({
+            name: 'win_scene',
+            url: '../scene/win_scene.html',
+            pageParam: {
+                id: id,
+                name: name
+            }
+        });
+    }
+
+    function openWinMember() {
+        api.openWin({
+            name: 'win_member_list',
+            url: '../my/win_member_list.html',
+            pageParam: {
+                // id: id,
+                // name: name
+            }
+        });
+    }
+
+    function getCover() {
+      api.ajax({
+          url: post_url + "family/show",
+          method: 'post',
+          data: {
+              values: {
+
+              }
+          },
+
+          headers: {
+              'Authorization': 'Bearer ' + $api.getStorage('access_token')
+          },
+      }, function(ret, err) {
+          if (ret.code == 200) {
+
+              //console.log(JSON.stringify(ret));
+              //$api.setStorage('userinfo', ret.data);
+              var info = ret.data;
+              //console.log(userinfo.family_name);
+              document.getElementById("img_cover").setAttribute('src', info.img_url);
+              document.getElementById("num_people").innerHTML = info.people;
+
+              //$api.html($api.byId('sTitle'), userinfo.family_name);
+
+          } else {
+
+              //console.log(JSON.stringify(err));
+          }
+      });
+    }
+
+    function funOpenSceneList() {
+        api.openWin({
+            name: 'win_scene_list',
+            url: '../scene/win_scene_list.html',
+            pageParam: {
+                // id: id,
+                // name: name
+            }
+        });
+    }
+
+    function openWinDevice(type) {
+        api.openWin({
+            name: 'win_device_' + type,
+            url: '../' + type + '/win_device.html',
+            // allowEdit: true
+        })
+    }
+
+    function getDataScene() {
+
+        var url = post_url + "scene/index";
+        runAjax(url, {}, function(ret, err) {
+            if (ret.code == 200) {
+                var data = ret.data.lists;
+                //console.log(JSON.stringify(data));
+                dotTpl('doT_list', 'item_list', data);
+            } else {
+                //toLogin2();
+                //console.log(JSON.stringify(err));
+            }
+        });
+
+    }
+
+
+    function funActionSheet() {
+        var mnPopups = api.require('MNPopups');
+        mnPopups.open({
+            rect: {
+                w: 150,
+                h: 50
+            },
+            position: {
+                x: api.winWidth * 2 / 3,
+                y: 150
+            },
+            styles: {
+                mask: 'rgba(0,0,0,0.2)',
+                bg: '#eee',
+                cell: {
+                    bg: {
+                        normal: '',
+                        highlight: ''
+                    },
+                    h: 48,
+                    title: {
+                        marginL: 18,
+                        color: '#636363',
+                        size: 18,
+                    },
+                    icon: {
+                        marginL: 10,
+                        w: 25,
+                        h: 25,
+                        corner: 2
+                    }
+                },
+                pointer: {
+                    size: 7,
+                    xPercent: 90,
+                    yPercent: 0,
+                    orientation: 'downward'
+                }
+            },
+            datas: [{
+                title: '更换封面',
+            }],
+            animation: true
+        }, function(ret) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+
+                if (ret.eventType == "click") {
+
+                    if (ret.index == 0) {
+                        var win_name = 'win_cover_edit';
+                        var dir = 'my';
+                    }
+
+
+                    api.openWin({
+                        name: win_name,
+                        url: '../' + dir + '/' + win_name + '.html',
+                        //delay : 200,
+                        pageParam: {
+                            id: ret.index
+                        },
+                    });
+                }
+            }
+        });
+    }
+</script>
