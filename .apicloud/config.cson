@@ -1,6 +1,7 @@
 "*":
   apicloud:
     autoSync: true
+  core: {}
   minimap:
     plugins:
       "git-diff": true
